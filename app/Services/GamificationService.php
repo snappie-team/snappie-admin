@@ -378,7 +378,7 @@ class GamificationService
             $review = \App\Models\Review::create([
                 "user_id" => $user->id,
                 "place_id" => $payload["place_id"],
-                "content" => $payload["content"],
+                "content" => $payload["content"] ?? "",
                 "rating" => $payload["rating"],
                 "image_urls" => $payload["image_urls"] ?? null,
                 "additional_info" => $payload["additional_info"] ?? null,
@@ -466,6 +466,51 @@ class GamificationService
         });
     }
 
+    public function getPlaceStatus(User $user, int $placeId): array
+    {
+        $place = \App\Models\Place::find($placeId);
+        if (!$place) {
+            throw new \InvalidArgumentException("Place not found");
+        }
+
+        $now = now();
+        $startOfMonth = $now->copy()->startOfMonth();
+        $endOfMonth = $now->copy()->endOfMonth();
+
+        $hasCheckedInThisMonth = \App\Models\Checkin::where(
+            "user_id",
+            $user->id,
+        )
+            ->where("place_id", $placeId)
+            ->whereBetween("created_at", [$startOfMonth, $endOfMonth])
+            ->exists();
+
+        $review = \App\Models\Review::where("user_id", $user->id)
+            ->where("place_id", $placeId)
+            ->whereBetween("created_at", [$startOfMonth, $endOfMonth])
+            ->orderBy("created_at", "desc")
+            ->first();
+
+        $reviewAdditionalInfo = $review?->additional_info;
+        $appReviewSubmittedThisMonth =
+            $review &&
+            is_array($reviewAdditionalInfo) &&
+            (($reviewAdditionalInfo["is_submitted_app_review"] ?? false) === true);
+
+        return [
+            "place_id" => $placeId,
+            "month" => $now->format("Y-m"),
+            "has_checkin_this_month" => $hasCheckedInThisMonth,
+            "has_review_this_month" => (bool) $review,
+            "app_review_submitted_this_month" => $appReviewSubmittedThisMonth,
+            "review_id" => $review?->id,
+            "can_checkin" => !$hasCheckedInThisMonth,
+            "can_review" => !$review,
+            "can_submit_app_review" =>
+                (bool) $review && !$appReviewSubmittedThisMonth,
+        ];
+    }
+
     /**
      * Mengupdate ulasan yang sudah ada.
      * @param User $user
@@ -501,11 +546,78 @@ class GamificationService
             if (array_key_exists("image_urls", $payload)) {
                 $review->image_urls = $payload["image_urls"];
             }
+            $originalAdditionalInfo = is_array($review->additional_info)
+                ? $review->additional_info
+                : [];
+            $incomingAdditionalInfo = null;
             if (array_key_exists("additional_info", $payload)) {
-                $review->additional_info = $payload["additional_info"];
+                $incomingAdditionalInfo = is_array($payload["additional_info"])
+                    ? $payload["additional_info"]
+                    : [];
+                $mergedAdditionalInfo = array_replace(
+                    $originalAdditionalInfo,
+                    $incomingAdditionalInfo,
+                );
+                if (
+                    ($incomingAdditionalInfo["is_submitted_app_review"] ??
+                        false) === true
+                ) {
+                    $mergedAdditionalInfo["is_submitted_app_review"] = true;
+                }
+                $review->additional_info = $mergedAdditionalInfo;
+            }
+
+            $shouldSubmitAppReview =
+                is_array($incomingAdditionalInfo) &&
+                (($incomingAdditionalInfo["is_submitted_app_review"] ?? false) ===
+                    true);
+            $wasSubmittedBefore =
+                ($originalAdditionalInfo["is_submitted_app_review"] ?? false) ===
+                true;
+            $eligibleForReward = false;
+            if ($shouldSubmitAppReview && !$wasSubmittedBefore) {
+                $reviewMonthStart = $review->created_at
+                    ? $review->created_at->copy()->startOfMonth()
+                    : now()->startOfMonth();
+                $reviewMonthEnd = $review->created_at
+                    ? $review->created_at->copy()->endOfMonth()
+                    : now()->endOfMonth();
+
+                $alreadyRewardedThisMonth = \App\Models\Review::where(
+                    "user_id",
+                    $user->id,
+                )
+                    ->whereBetween("created_at", [
+                        $reviewMonthStart,
+                        $reviewMonthEnd,
+                    ])
+                    ->where("additional_info->is_submitted_app_review", true)
+                    ->exists();
+
+                $eligibleForReward = !$alreadyRewardedThisMonth;
             }
 
             $review->save();
+
+            if ($eligibleForReward) {
+                $place = \App\Models\Place::find($review->place_id);
+                if ($place) {
+                    $metadata = [
+                        "type" => "AppReview",
+                        "id" => $review->id,
+                    ];
+                    if ($place->coin_reward > 0) {
+                        $this->addCoins(
+                            $user,
+                            $place->coin_reward,
+                            $metadata,
+                        );
+                    }
+                    if ($place->exp_reward > 0) {
+                        $this->addExp($user, $place->exp_reward, $metadata);
+                    }
+                }
+            }
 
             // Hitung ulang rata-rata rating jika rating berubah
             if (isset($payload["rating"])) {
@@ -532,10 +644,7 @@ class GamificationService
                 ]);
             }
 
-            return [
-                "action_result" => $review->toArray(),
-                "user_stats" => $this->getUserStats($user->fresh()),
-            ];
+            return $review->fresh()->toArray();
         });
     }
 
