@@ -56,7 +56,9 @@ class AchievementFactory extends Factory
             "status" => true,
             "reset_schedule" => fake()->randomElement($resetSchedules),
             "display_order" => fake()->numberBetween(1, 100),
-            "additional_info" => null,
+            "additional_info" => [
+                "subtitle" => fake()->optional(0.7)->sentence(4),
+            ],
         ];
     }
 
