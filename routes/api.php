@@ -148,6 +148,10 @@ Route::middleware("api")
                     GamificationController::class,
                     "rewards",
                 ]);
+                Route::get("/place-status", [
+                    GamificationController::class,
+                    "placeStatus",
+                ]);
 
                 // Transaction history
                 Route::get("/coins/transactions", [
