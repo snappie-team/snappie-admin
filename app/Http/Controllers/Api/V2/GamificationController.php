@@ -344,6 +344,65 @@ class GamificationController
         }
     }
 
+    public function placeStatus(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Unauthorized",
+                    ],
+                    401,
+                );
+            }
+
+            $payload = $request->validate([
+                "place_id" => "required|integer",
+            ]);
+
+            $result = $this->service->getPlaceStatus(
+                $user,
+                (int) $payload["place_id"],
+            );
+
+            return response()->json([
+                "success" => true,
+                "message" => "Place status retrieved successfully",
+                "data" => $result,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Validation failed",
+                    "errors" => $e->errors(),
+                ],
+                400,
+            );
+        } catch (\InvalidArgumentException $e) {
+            $errorMessage = $e->getMessage();
+            $status = str_contains($errorMessage, "not found") ? 404 : 400;
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => $errorMessage,
+                ],
+                $status,
+            );
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Internal server error",
+                    "error" => $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+
     /**
      * Grant an achievement to the user (manual grant).
      */
