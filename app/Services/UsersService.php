@@ -123,6 +123,32 @@ class UsersService
             ];
         }
 
+        // Handle additional_info sub-objects (user_settings, user_notification, user_preferences)
+        if (isset($payload['additional_info']) && is_array($payload['additional_info'])) {
+            $additionalPayload = $payload['additional_info'];
+
+            if (isset($additionalPayload['user_settings']) && is_array($additionalPayload['user_settings'])) {
+                $add['user_settings'] = array_replace_recursive(
+                    $add['user_settings'] ?? [],
+                    $additionalPayload['user_settings'],
+                );
+            }
+
+            if (isset($additionalPayload['user_notification']) && is_array($additionalPayload['user_notification'])) {
+                $add['user_notification'] = array_replace_recursive(
+                    $add['user_notification'] ?? [],
+                    $additionalPayload['user_notification'],
+                );
+            }
+
+            if (isset($additionalPayload['user_preferences']) && is_array($additionalPayload['user_preferences'])) {
+                $add['user_preferences'] = array_replace_recursive(
+                    $add['user_preferences'] ?? [],
+                    $additionalPayload['user_preferences'],
+                );
+            }
+        }
+
         if (isset($payload['name'])) {
             $user->name = $payload['name'];
         }
@@ -365,7 +391,8 @@ class UsersService
         $query = \App\Models\Review::where('user_id', $userId)
             ->with([
                 'place:id,name,image_urls',
-            ]);
+            ])
+            ->orderBy('created_at', 'desc');
 
         $reviews = $page ? $query->paginate($perPage, ['*'], 'page', $page) : $query->paginate($perPage);
 
@@ -390,7 +417,8 @@ class UsersService
                 'comments.user:id,name,username,image_url', 
                 'likes.user:id,name,username,image_url'
             ])
-            ->withCount(['likes', 'comments']);
+            ->withCount(['likes', 'comments'])
+            ->orderBy('created_at', 'desc');
 
         $posts = $page ? $query->paginate($perPage, ['*'], 'page', $page) : $query->paginate($perPage);
 

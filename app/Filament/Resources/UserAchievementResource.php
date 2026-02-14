@@ -422,7 +422,7 @@ class UserAchievementResource extends Resource
                 // Section 3: Reward Information
                 Infolists\Components\Section::make('💰 Reward Information')
                     ->schema([
-                        Infolists\Components\Grid::make(3)
+                        Infolists\Components\Grid::make(4)
                             ->schema([
                                 Infolists\Components\TextEntry::make('achievement.coin_reward')
                                     ->label('Coin Reward')
@@ -445,6 +445,13 @@ class UserAchievementResource extends Resource
                                     ->badge()
                                     ->color('indigo')
                                     ->icon('heroicon-m-bolt'),
+
+                                Infolists\Components\TextEntry::make('achievement.criteria_target')
+                                    ->label('Criteria Target')
+                                    ->numeric()
+                                    ->badge()
+                                    ->color('purple')
+                                    ->icon('heroicon-m-flag'),
                             ]),
                     ])->collapsible(),
 

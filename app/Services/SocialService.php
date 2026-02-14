@@ -107,6 +107,8 @@ class SocialService
             $query->where("content", "like", "%" . $tag . "%");
         }
 
+        $query->orderBy('created_at', 'desc');
+
         $posts = $page
             ? $query->paginate($perPage, ["*"], "page", (int) $page)
             : $query->paginate($perPage);
@@ -289,6 +291,35 @@ class SocialService
             }
 
             return $result;
+        });
+    }
+
+    /**
+     * Delete a post
+     */
+    public function deletePost(User $user, int $postId): bool
+    {
+        return DB::transaction(function () use ($user, $postId) {
+            $post = Post::find($postId);
+
+            if (!$post) {
+                throw new \InvalidArgumentException("Post not found");
+            }
+
+            // Check if user is the owner of the post
+            if ($post->user_id !== $user->id) {
+                throw new \InvalidArgumentException("You are not authorized to delete this post");
+            }
+
+            // Delete the post
+            $post->delete();
+
+            // Decrement user's total_post count
+            if ($user->total_post > 0) {
+                $user->decrement("total_post");
+            }
+
+            return true;
         });
     }
 
@@ -518,9 +549,11 @@ class SocialService
             if ($like) {
                 // Unlike the post
                 $like->delete();
+                $post->decrement("total_like");
                 return [
                     "action" => "unlike",
                     "post_id" => $postId,
+                    "total_like" => $post->fresh()->total_like,
                 ];
             }
 
@@ -530,6 +563,9 @@ class SocialService
                 "related_to_type" => \App\Models\Post::class,
                 "related_to_id" => $postId,
             ]);
+
+            // Increment total_like on post
+            $post->increment("total_like");
 
             // Log like action for achievement tracking
             $user = User::find($userId);
@@ -545,6 +581,7 @@ class SocialService
             $result = [
                 "action" => "like",
                 "post_id" => $postId,
+                "total_like" => $post->fresh()->total_like,
             ];
 
             // Add gamification if there are completed achievements/challenges
@@ -585,6 +622,9 @@ class SocialService
                 "post_id" => $postId,
                 "comment" => $comment,
             ]);
+
+            // Increment total_comment on post
+            $post->increment("total_comment");
 
             // Log comment action for achievement tracking
             $user = User::find($userId);
@@ -628,9 +668,9 @@ class SocialService
     }
 
     /**
-     * Like a post
+     * Like a comment
      */
-    public function likeComment(int $userId, int $commentId): bool
+    public function likeComment(int $userId, int $commentId): array
     {
         $comment = \App\Models\UserComment::find($commentId);
         if (!$comment) {
@@ -646,7 +686,12 @@ class SocialService
         if ($like) {
             // Unlike the comment
             $like->delete();
-            return false;
+            $comment->decrement("total_like");
+            return [
+                "action" => "unlike",
+                "comment_id" => $commentId,
+                "total_like" => $comment->fresh()->total_like,
+            ];
         }
 
         // Create new like
@@ -655,6 +700,14 @@ class SocialService
             "related_to_type" => \App\Models\UserComment::class,
             "related_to_id" => $commentId,
         ]);
-        return $like->wasRecentlyCreated;
+
+        // Increment total_like on comment
+        $comment->increment("total_like");
+
+        return [
+            "action" => "like",
+            "comment_id" => $commentId,
+            "total_like" => $comment->fresh()->total_like,
+        ];
     }
 }

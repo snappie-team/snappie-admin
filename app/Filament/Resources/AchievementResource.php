@@ -76,6 +76,13 @@ class AchievementResource extends Resource
                             ->helperText('Nama yang akan ditampilkan')
                             ->suffixIcon('heroicon-m-trophy'),
 
+                        Forms\Components\TextInput::make('additional_info.subtitle')
+                            ->label('Subtitle')
+                            ->placeholder('Subtitle singkat untuk achievement')
+                            ->maxLength(255)
+                            ->helperText('Subtitle opsional (disimpan di additional_info)')
+                            ->suffixIcon('heroicon-m-bookmark'),
+
                         Forms\Components\Textarea::make('description')
                             ->label('Deskripsi')
                             ->placeholder('Deskripsi dan cara mendapatkannya...')
@@ -477,6 +484,12 @@ class AchievementResource extends Resource
                                             ->weight(FontWeight::Bold)
                                             ->size('lg')
                                             ->icon('heroicon-m-trophy'),
+
+                                        Infolists\Components\TextEntry::make('additional_info.subtitle')
+                                            ->label('Subtitle')
+                                            ->icon('heroicon-m-bookmark')
+                                            ->color('gray')
+                                            ->visible(fn (Achievement $record): bool => !empty($record->additional_info['subtitle'] ?? null)),
 
                                         Infolists\Components\Grid::make(3)
                                             ->schema([

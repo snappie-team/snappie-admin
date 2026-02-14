@@ -104,6 +104,16 @@ class UsersController
             'notification_preferences' => ['sometimes', 'array'],
             'notification_preferences.email_notifications' => ['required_with:notification_preferences', 'boolean'],
             'notification_preferences.push_notifications' => ['required_with:notification_preferences', 'boolean'],
+            'additional_info' => ['sometimes', 'array'],
+            'additional_info.user_settings' => ['sometimes', 'array'],
+            'additional_info.user_settings.frame_url' => ['sometimes', 'nullable', 'string'],
+            'additional_info.user_settings.language' => ['sometimes', 'string'],
+            'additional_info.user_settings.theme' => ['sometimes', 'string'],
+            'additional_info.user_notification' => ['sometimes', 'array'],
+            'additional_info.user_notification.push_notification' => ['sometimes', 'boolean'],
+            'additional_info.user_preferences' => ['sometimes', 'array'],
+            'additional_info.user_preferences.food_type' => ['sometimes', 'array'],
+            'additional_info.user_preferences.place_value' => ['sometimes', 'array'],
         ]);
         $updated = $this->service->updateProfile($user->id, $payload);
 
