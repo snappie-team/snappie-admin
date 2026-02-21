@@ -26,61 +26,60 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Sagarmatha Coffee Bar',
-                'description' => 'Hidden gem sesungguhnya di Pontianak. Berlokasi di rooftop gang sempit Sungai Jawi, tempat ini menawarkan suasana slow bar yang intim dengan pemandangan sunset kota yang syahdu.',
-                'longitude' => 109.3155,
-                'latitude' => -0.0289,
+                'description' => 'Hidden gem di Pontianak Barat yang menawarkan pengalaman ngopi intimate dengan konsep slow bar industrial. Mengedepankan bahan natural, tempat ini menyajikan racikan kopi unik dengan gula lontar dan buah segar tanpa pemanis buatan. Suasananya yang tenang menjadikannya tempat pelarian sempurna dari hiruk-pikuk kota.',
+                'longitude' => 109.322011,
+                'latitude' => -0.017063,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Bar Seat'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Outdoor'],
                 ],
                 'coin_reward' => 30,
-                'exp_reward' => 150, // High XP for hidden location
-                'min_price' => 20000,
-                'max_price' => 45000,
+                'exp_reward' => 150,
+                'min_price' => 25000,
+                'max_price' => 50000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Rooftop slow bar dengan pemandangan sunset terbaik di Pontianak.',
-                        'address' => 'Jl. H. Rais A. Rachman, Gg. Selamat 3 No. 36B, Pontianak Kota.',
-                        'opening_hours' => '16:00',
-                        'closing_hours' => '23:00',
-                        'opening_days' => ['Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '6281234567890', // Placeholder
+                        'short_description' => 'Slow bar industrial yang menyajikan kopi berbahan natural di lokasi tersembunyi.',
+                        'address' => 'Jl. H. Rais A. Rachman Gg. Selamat 3 No.36b, Sungai Jawi Dalam, Pontianak Barat',
+                        'opening_hours' => '09:00',
+                        'closing_hours' => '18:00', // Actual closing time
+                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                        'contact_number' => null,
                         'website' => 'https://instagram.com/sagarmatha.coffee',
                     ],
-                    'place_value' => ['Estetika/Instagrammable', 'Suasana Tenang', 'Nongkrong', 'Bersejarah/Tradisional'],
-                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Tradisional'],
+                    'place_value' => ['Suasana Tenang', 'Rasa Autentik', 'Menu Unik/Variasi', 'Estetika/Instagrammable'],
+                    'food_type' => ['Minuman dan Tambahan', 'Makanan Cepat Saji', 'Makanan Kemasan', 'Menu Campuran'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'V60 Manual Brew', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Seduhan kopi manual dengan beans pilihan.'],
-                        ['name' => 'Sunset Mocktail', 'image_url' => $faker->imageUrl(640, 480), 'price' => 28000, 'description' => 'Campuran segar soda dan buah tropis.'],
-                        ['name' => 'Cireng Rujak', 'image_url' => $faker->imageUrl(640, 480), 'price' => 18000, 'description' => 'Camilan gurih dengan bumbu rujak pedas.']
+                        ['name' => 'Sagarmatha Signature', 'image_url' => $faker->imageUrl(640, 480), 'price' => 28000, 'description' => 'Espresso dengan ekstrak nanas home-made dan rempah natural.'],
+                        ['name' => 'Mauna Kea', 'image_url' => $faker->imageUrl(640, 480), 'price' => 28000, 'description' => 'Paduan unik kopi dengan ekstrak buah bit segar.'],
+                        ['name' => 'Distillate', 'image_url' => $faker->imageUrl(640, 480), 'price' => 33000, 'description' => 'Paduan unik kopi dengan ekstrak buah bit segar.'],
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Outdoor Seating', 'description' => 'Area rooftop terbuka.'],
-                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi stabil.'],
-                            ['name' => 'Toilet Bersih', 'description' => 'Tersedia di lantai bawah.']
+                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi stabil untuk browsing ringan.'],
+                            ['name' => 'Toilet', 'description' => 'Bersih dan terawat.'],
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Area parkir terbatas di dalam gang.']
+                            ['name' => 'Parkir Motor', 'description' => 'Tersedia.'],
+                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir terbatas di dalam gang.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Cocok untuk pasangan atau grup kecil.'],
-                            ['name' => 'Counter Seat', 'description' => 'Duduk di depan barista.']
+                            ['name' => 'Meja Kecil', 'description' => 'Ideal untuk 2-3 orang.'],
+                            ['name' => 'Bar Seat', 'description' => 'Duduk berhadapan langsung dengan barista.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Tangga', 'description' => 'Akses ke rooftop menggunakan tangga putar (kurang ramah kursi roda).']
+                            ['name' => 'Tangga', 'description' => 'Akses ke lantai 2 menggunakan tangga.']
                         ],
                         'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Scan QR tersedia.'],
-                            ['name' => 'Tunai', 'description' => 'Menerima cash.']
+                            ['name' => 'QRIS', 'description' => 'Metode pembayaran utama.'],
+                            ['name' => 'Tunai', 'description' => 'Metode pembayaran utama.']
                         ],
                         'service' => [
-                            ['name' => 'Dine In', 'description' => 'Wajib makan di tempat.'],
-                            ['name' => 'Private Event', 'description' => 'Bisa booking satu rooftop.']
+                            ['name' => 'Dine In', 'description' => 'Disarankan untuk pengalaman terbaik.'],
                         ]
                     ]
                 ]
@@ -91,62 +90,62 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => '2818 Coffee Roasters',
-                'description' => 'Tempat serius untuk pecinta kopi. Mengusung konsep industrial di area perumahan, tempat ini me-roasting biji kopi mereka sendiri. Vibe-nya tenang, cocok untuk WFC.',
-                'longitude' => 109.3321,
-                'latitude' => -0.0450,
+                'description' => 'Micro-roastery yang terletak di kawasan perumahan tenang, menawarkan kopi spesialti hasil sangrai sendiri. Tempat ini menjadi favorit para pekerja lepas karena suasananya yang hening dan kondusif. Selain kopi, tersedia juga menu pendamping seperti pastry dan camilan berat.',
+                'longitude' => 109.330338,
+                'latitude' => -0.054115,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Meja Kerja'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Outdoor'],
                 ],
                 'coin_reward' => 40,
                 'exp_reward' => 80,
-                'min_price' => 25000,
-                'max_price' => 60000,
+                'min_price' => 20000,
+                'max_price' => 65000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Roastery dan coffee shop industrial yang nyaman untuk bekerja.',
-                        'address' => 'Jl. Johar No. 28, Pontianak.',
+                        'short_description' => 'Home roastery yang tenang dan ideal untuk fokus bekerja.',
+                        'address' => 'Gg. Purnama Agung 3, Parit Tokaya, Kec. Pontianak Selatan',
                         'opening_hours' => '08:00',
-                        'closing_hours' => '22:00',
+                        'closing_hours' => '21:00',
                         'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '6281100002818',
-                        'website' => 'https://instagram.com/2818coffeeroasters',
+                        'contact_number' => '082154619606',
+                        'website' => 'https://instagram.com/2818.coffeeroasters',
                     ],
-                    'place_value' => ['Rasa Autentik', 'Work From Cafe', 'Jaringan Lancar', 'Suasana Tenang'],
-                    'food_type' => ['Minuman dan Tambahan', 'Makanan Kemasan', 'Menu Komposit'],
+                    'place_value' => ['Work From Cafe', 'Suasana Tenang', 'Jaringan Lancar', 'Rasa Autentik'],
+                    'food_type' => ['Minuman dan Tambahan', 'Makanan Cepat Saji', 'Menu Campuran', 'Makanan Kemasan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Magic Latte', 'image_url' => $faker->imageUrl(640, 480), 'price' => 32000, 'description' => 'Double ristretto dengan susu creamy.'],
-                        ['name' => 'Croissant Butter', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Pastry renyah teman ngopi.'],
-                        ['name' => 'Japanese Iced Coffee', 'image_url' => $faker->imageUrl(640, 480), 'price' => 30000, 'description' => 'Segar dan fruity.']
+                        ['name' => 'Lemonade Coffee', 'image_url' => $faker->imageUrl(640, 480), 'price' => 26000, 'description' => 'Espresso house blend dengan gula aren legit.'],
+                        ['name' => 'Dirty Matcha', 'image_url' => $faker->imageUrl(640, 480), 'price' => 28000, 'description' => 'Makaroni panggang dengan keju melimpah.'],
+                        ['name' => 'Sweet Coffee Shake', 'image_url' => $faker->imageUrl(640, 480), 'price' => 28000, 'description' => 'Coklat pekat dengan tekstur fudgy.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'AC', 'description' => 'Ruangan dingin dan nyaman.'],
-                            ['name' => 'Colokan Listrik', 'description' => 'Tersedia di setiap meja.'],
-                            ['name' => 'WiFi Gratis', 'description' => 'Internet kecepatan tinggi.']
+                            ['name' => 'Colokan Listrik', 'description' => 'Tersedia hampir di setiap meja.'],
+                            ['name' => 'AC', 'description' => 'Ruangan indoor sejuk.'],
+                            ['name' => 'WiFi Kencang', 'description' => 'Cocok untuk work from cafe.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir cukup luas.'],
-                            ['name' => 'Parkir Motor', 'description' => 'Tersedia.']
+                            ['name' => 'Parkir Motor', 'description' => 'Aman di halaman rumah.'],
+                            ['name' => 'Parkir Mobil', 'description' => 'Terbatas di bahu jalan gang.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Sedang (5-8 orang)', 'description' => 'Untuk meeting kecil.'],
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Untuk kerja sendiri.']
+                            ['name' => 'Meja Kerja', 'description' => 'Meja tinggi nyaman untuk laptop.'],
+                            ['name' => 'Communal Table', 'description' => 'Meja panjang untuk grup kecil.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Ramp/Landai', 'description' => 'Akses masuk mudah.']
+                            ['name' => 'Rata Tanah', 'description' => 'Mudah diakses dari jalan.']
                         ],
                         'payment' => [
-                            ['name' => 'Debit Card', 'description' => 'Bisa gesek.'],
-                            ['name' => 'QRIS', 'description' => 'Scan QR.']
+                            ['name' => 'QRIS', 'description' => 'Scan QR tersedia.'],
+                            ['name' => 'Transfer Bank', 'description' => 'Bisa transfer langsung.']
                         ],
                         'service' => [
-                            ['name' => 'Take Away', 'description' => 'Tersedia.'],
-                            ['name' => 'Dine In', 'description' => 'Suasana kondusif.']
+                            ['name' => 'Dine In', 'description' => 'Suasana hening dihargai.'],
+                            ['name' => 'Take Away', 'description' => 'Kemasan botol tersedia.']
                         ]
                     ]
                 ]
@@ -157,62 +156,61 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Ningrat Eatery',
-                'description' => 'Restoran modern yang menaikkan kelas kuliner Nusantara. Nasi goreng dan bakso disajikan dengan plating estetik. Tempat luas, cocok untuk makan bersama keluarga.',
-                'longitude' => 109.3288,
-                'latitude' => -0.0355,
+                'description' => 'Restoran keluarga yang menghadirkan nuansa Jawa modern di tengah kota Pontianak. Menyajikan hidangan Nusantara yang dikemas secara estetik dengan rasa yang tetap otentik. Tempatnya luas dan nyaman, sangat cocok untuk acara makan bersama keluarga besar atau kolega.',
+                'longitude' => 109.327116,
+                'latitude' => -0.063684,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Lesehan'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Parkir'],
                 ],
                 'coin_reward' => 60,
                 'exp_reward' => 50,
-                'min_price' => 30000,
-                'max_price' => 80000,
+                'min_price' => 25000,
+                'max_price' => 50000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Restoran keluarga dengan menu Nusantara modern.',
-                        'address' => 'Jl. Karimata No. 5, Pontianak.',
-                        'opening_hours' => '10:00',
-                        'closing_hours' => '22:00',
-                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '6282199998888',
-                        'website' => 'https://instagram.com/ningrateatery',
+                        'short_description' => 'Restoran bernuansa Jawa modern dengan menu Nusantara yang variatif.',
+                        'address' => 'Jl. Purnama Agung 7 (Sekitar Parit Tokaya), Pontianak Selatan.',
+                        'opening_hours' => '11:00',
+                        'closing_hours' => '21:00',
+                        'opening_days' => ['Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                        'contact_number' => '082148579657',
+                        'website' => 'https://instagram.com/ningrat.idn',
                     ],
-                    'place_value' => ['Ramah Keluarga', 'Menu Unik/Variasi', 'Pelayanan Ramah', 'Estetika/Instagrammable'],
-                    'food_type' => ['Gaya Padang', 'Liwetan', 'Menu Campuran'],
+                    'place_value' => ['Ramah Keluarga', 'Suasana Homey', 'Rasa Autentik', 'Pelayanan Ramah'],
+                    'food_type' => ['Menu Komposit', 'Sup/Soto', 'Menu Campuran', 'Makanan Tradisional'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Nasi Goreng Ningrat', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => 'Nasi goreng spesial dengan sate.'],
-                        ['name' => 'Bakso Beranak', 'image_url' => $faker->imageUrl(640, 480), 'price' => 40000, 'description' => 'Bakso besar isi bakso kecil.'],
-                        ['name' => 'Es Campur Royal', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Segar dengan topping melimpah.']
+                        ['name' => 'Mie Goreng Jawa Ala Ningrat', 'image_url' => $faker->imageUrl(640, 480), 'price' => 29500, 'description' => 'Nasi goreng signature dengan lauk lengkap.'],
+                        ['name' => 'Gudeg Lengkap', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => 'Sup iga sapi kuah bening segar.'],
+                        ['name' => 'Urap Lengkap', 'image_url' => $faker->imageUrl(640, 480), 'price' => 32800, 'description' => 'Bebek goreng empuk dengan sambal khas.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Musholla', 'description' => 'Luas dan bersih.'],
-                            ['name' => 'AC', 'description' => 'Full AC.'],
-                            ['name' => 'Playground Anak', 'description' => 'Area bermain kecil.']
+                            ['name' => 'AC', 'description' => 'Area makan dalam ruangan sejuk.'],
+                            ['name' => 'Photo Spot', 'description' => 'Dekorasi etnik Jawa yang instagrammable.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Sangat luas.'],
-                            ['name' => 'Valet Parking', 'description' => 'Opsional saat ramai.']
+                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir memadai.'],
+                            ['name' => 'Parkir Motor', 'description' => 'Tersedia.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Besar (9-12 orang)', 'description' => 'Untuk rombongan keluarga.'],
-                            ['name' => 'Private Room', 'description' => 'Untuk acara privat.']
+                            ['name' => 'Meja Besar', 'description' => 'Cocok untuk rombongan 6-10 orang.'],
+                            ['name' => 'Area Lesehan', 'description' => 'Tersedia opsi duduk lesehan.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Toilet Difabel', 'description' => 'Tersedia.']
+                            ['name' => 'Ramah Anak', 'description' => 'Space luas untuk anak-anak.']
                         ],
                         'payment' => [
-                            ['name' => 'Credit Card', 'description' => 'Bisa.'],
-                            ['name' => 'Tunai', 'description' => 'Bisa.']
+                            ['name' => 'Tunai', 'description' => 'Bisa.'],
+                            ['name' => 'Transfer', 'description' => 'Bisa.']
                         ],
                         'service' => [
-                            ['name' => 'Reservation', 'description' => 'Bisa booking tempat.'],
-                            ['name' => 'Catering', 'description' => 'Menerima pesanan box.']
+                            ['name' => 'Reservasi', 'description' => 'Bisa booking meja sebelumnya.'],
+                            ['name' => 'Dine In', 'description' => 'Penyajian makanan cepat.']
                         ]
                     ]
                 ]
@@ -223,61 +221,61 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Tokokopi ODS',
-                'description' => 'Singkatan dari "Orang Dalam Sini". Spot nongkrong favorit anak muda dengan konsep unfinished industrial yang santai.',
-                'longitude' => 109.3422,
-                'latitude' => -0.0311,
+                'description' => 'Kedai kopi ini menjadi tempat favorit anak muda Pontianak untuk bercerita. Tersembunyi di dalam gang dengan konsep bangunan industrial raw yang estetik. Menu andalannya adalah varian matcha dan kopi susu creamy yang ramah di kantong pelajar.',
+                'longitude' => 109.311196,
+                'latitude' => -0.031275,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Outdoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Parkir'],
                 ],
                 'coin_reward' => 20,
                 'exp_reward' => 60,
                 'min_price' => 18000,
-                'max_price' => 40000,
+                'max_price' => 35000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Tempat nongkrong asik "Orang Dalam Sini" dengan kopi susu creamy.',
-                        'address' => 'Jl. Sepakat 2, Pontianak.',
-                        'opening_hours' => '07:00',
-                        'closing_hours' => '23:00',
-                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62813XXXXXXXX',
-                        'website' => 'https://instagram.com/tokokopiods',
+                        'short_description' => 'Spot nongkrong hidden gem dengan menu matcha dan kopi susu hits.',
+                        'address' => 'Jl. HM Suwignyo, Gg. Tegal Rejo IIIA, Pontianak Kota.',
+                        'opening_hours' => '09:00',
+                        'closing_hours' => '16:00',
+                        'opening_days' => ['Senin', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                        'contact_number' => null,
+                        'website' => 'https://instagram.com/tokokopi_ods',
                     ],
-                    'place_value' => ['Harga Terjangkau', 'Nongkrong', 'Buka 24 Jam', 'Suasana Tenang'],
-                    'food_type' => ['Minuman dan Tambahan', 'Mi Instan', 'Menu Campuran'],
+                    'place_value' => ['Harga Terjangkau', 'Nongkrong', 'Estetika/Instagrammable', 'Suasana Tenang'],
+                    'food_type' => ['Minuman dan Tambahan', 'Mi Instan', 'Menu Campuran', 'Makanan Cepat Saji'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Es Kopi ODS', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Signature kopi susu gula aren.'],
-                        ['name' => 'Roti Bakar Coklat', 'image_url' => $faker->imageUrl(640, 480), 'price' => 18000, 'description' => 'Roti bakar tebal topping melimpah.'],
-                        ['name' => 'Sea Salt Latte', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Kopi susu dengan foam asin gurih.']
+                        ['name' => 'Es Kopi Susu Rayu', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Matcha premium yang creamy dan pekat.'],
+                        ['name' => 'Spesial Tea', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Signature kopi susu gula aren.'],
+                        ['name' => 'Pure Matcha', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => 'Camilan manis pendamping kopi.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Smoking Area', 'description' => 'Area outdoor luas.'],
-                            ['name' => 'WiFi Gratis', 'description' => 'Kencang.'],
-                            ['name' => 'Colokan Listrik', 'description' => 'Banyak tersedia.']
+                            ['name' => 'Outdoor Area', 'description' => 'Area duduk santai di teras.'],
+                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi cukup untuk media sosial.'],
+                            ['name' => 'Stopkontak', 'description' => 'Tersedia di beberapa titik.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Sangat luas.']
+                            ['name' => 'Parkir Motor', 'description' => 'Area parkir di halaman rumah.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Banyak meja kecil.'],
-                            ['name' => 'Outdoor Table', 'description' => 'Konsep teras.']
+                            ['name' => 'Meja Kecil', 'description' => 'Cocok untuk 2-4 orang.'],
+                            ['name' => 'Lesehan', 'description' => 'Tersedia area duduk santai.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Akses mudah.']
+                            ['name' => 'Jalan Gang', 'description' => 'Akses masuk hanya muat satu motor.']
                         ],
                         'payment' => [
-                            ['name' => 'ShopeePay', 'description' => 'Scan QR.'],
+                            ['name' => 'QRIS', 'description' => 'Diutamakan non-tunai.'],
                             ['name' => 'Tunai', 'description' => 'Bisa.']
                         ],
                         'service' => [
-                            ['name' => 'Take Away', 'description' => 'Cup sealer praktis.'],
-                            ['name' => 'Dine In', 'description' => 'Self service.']
+                            ['name' => 'Self Service', 'description' => 'Ambil dan bereskan pesanan sendiri.'],
+                            ['name' => 'Take Away', 'description' => 'Cup sealer rapi.']
                         ]
                     ]
                 ]
@@ -288,59 +286,57 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'House of Tahron',
-                'description' => 'Rumah hunian yang disulap menjadi restoran Western & Pasta yang sangat homey. Serasa makan di rumah nenek tapi dengan kualitas makanan bintang lima.',
+                'description' => 'Mengubah fungsi rumah tinggal menjadi restoran yang hangat, House of Tahron menawarkan suasana makan seperti di rumah nenek. Interiornya dipenuhi ornamen vintage yang unik. Menu andalannya adalah masakan rumahan (comfort food) dan pasta yang dimasak dengan hati.',
                 'longitude' => 109.3305,
                 'latitude' => -0.0401,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Teras Vintage'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Parkir'],
                 ],
                 'coin_reward' => 80,
                 'exp_reward' => 70,
-                'min_price' => 35000,
-                'max_price' => 100000,
+                'min_price' => 30000,
+                'max_price' => 85000,
                 'status' => true,
                 'partnership_status' => false,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Home-restaurant dengan menu Western dan Pasta otentik.',
-                        'address' => 'Jl. Tani Makmur, Pontianak.',
-                        'opening_hours' => '11:00',
-                        'closing_hours' => '21:00',
+                        'short_description' => 'Restoran rumahan bergaya vintage dengan menu comfort food.',
+                        'address' => 'Jalan Alianyang, Gg. Kencana 1 No.4, Sungai Bangkong, Pontianak Kota',
+                        'opening_hours' => '09:00',
+                        'closing_hours' => '23:00',
                         'opening_days' => ['Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62812XXXXXXXX',
-                        'website' => 'https://',
+                        'contact_number' => null,
+                        'website' => 'https://instagram.com/houseoftahron',
                     ],
-                    'place_value' => ['Suasana Homey', 'Rasa Autentik', 'Estetika/Instagrammable', 'Bersejarah/Tradisional'],
-                    'food_type' => ['Menu Komposit', 'Liwetan', 'Menu Campuran'],
+                    'place_value' => ['Suasana Homey', 'Bersejarah/Tradisional', 'Estetika/Instagrammable', 'Pelayanan Ramah'],
+                    'food_type' => ['Menu Komposit', 'Menu Campuran', 'Makanan Tradisional', 'Minuman dan Tambahan'],
                     'menu_image_url' => 'https://via.placeholder.com/640x480?text=Menu+Tahron',
                     'menu' => [
-                        ['name' => 'Aglio Olio', 'image_url' => $faker->imageUrl(640, 480), 'price' => 45000, 'description' => 'Pasta pedas gurih dengan udang.'],
-                        ['name' => 'Sirloin Steak', 'image_url' => $faker->imageUrl(640, 480), 'price' => 95000, 'description' => 'Daging sapi impor juicy.'],
-                        ['name' => 'Mushroom Soup', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => 'Sup krim jamur kental.']
+                        ['name' => 'Espresso On The Rock', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Espresso, symple syrup, lemon.'],
+                        ['name' => 'Earlgrey Cream', 'image_url' => $faker->imageUrl(640, 480), 'price' => 30000, 'description' => 'Coldbrew earlgrey topped with aromatic cream.'],
+                        ['name' => 'Virgin Colada', 'image_url' => $faker->imageUrl(640, 480), 'price' => 27000, 'description' => 'Non-coffee mocktail with tropical juice and rhum.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Indoor Seating', 'description' => 'Ruang tamu yang nyaman.'],
-                            ['name' => 'AC', 'description' => 'Sejuk.']
+                            ['name' => 'AC', 'description' => 'Sejuk dan nyaman.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Terbatas (Carport).']
+                            ['name' => 'Carport', 'description' => 'Parkir mobil terbatas di garasi rumah.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Sedang (5-8 orang)', 'description' => 'Meja makan keluarga.'],
-                            ['name' => 'Private Room', 'description' => 'Kamar yang disulap jadi ruang makan.']
+                            ['name' => 'Private Spot', 'description' => 'Sudut tenang untuk pasangan.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Mudah diakses.']
+                            ['name' => 'Teras', 'description' => 'Akses masuk melalui teras rumah.']
                         ],
                         'payment' => [
-                            ['name' => 'Tunai', 'description' => 'Utama.'],
-                            ['name' => 'Transfer', 'description' => 'BCA Transfer.']
+                            ['name' => 'Tunai', 'description' => 'Diutamakan.'],
+                            ['name' => 'Transfer', 'description' => 'BCA Available.']
                         ],
                         'service' => [
-                            ['name' => 'Reservation', 'description' => 'Disarankan reservasi.']
+                            ['name' => 'Table Service', 'description' => 'Pelayanan ramah seperti bertamu.']
                         ]
                     ]
                 ]
@@ -351,182 +347,191 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Rumangsa Kopi',
-                'description' => 'Kedai kopi di area Untan yang memanfaatkan teras rumah. Sangat tenang, dikelilingi pohon rindang. Salah satu spot terbaik untuk WFC atau membaca buku.',
-                'longitude' => 109.3490,
-                'latitude' => -0.0550,
+                'description' => 'Berlokasi di komplek perumahan dosen yang tenang, Rumangsa Kopi memanfaatkan halaman rumah yang asri sebagai area ngopi. Dikelilingi pohon rindang, tempat ini menawarkan kesejukan alami di tengah kota. Sangat direkomendasikan untuk Anda yang butuh ketenangan saat bekerja atau membaca.',
+                'longitude' => 109.352495,
+                'latitude' => -0.048739,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Taman'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Teras'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Parkir'],
                 ],
                 'coin_reward' => 25,
-                'exp_reward' => 130, // High XP
-                'min_price' => 20000,
-                'max_price' => 45000,
-                'status' => true,
-                'partnership_status' => true,
-                'additional_info' => [
-                    'place_detail' => [
-                        'short_description' => 'Hidden spot di komplek dosen yang tenang dan asri.',
-                        'address' => 'Komp. Untan, Jl. Silat No. X, Pontianak.',
-                        'opening_hours' => '08:00',
-                        'closing_hours' => '22:00',
-                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62852XXXXXXXX',
-                        'website' => 'https://instagram.com/rumangsa.kopi',
-                    ],
-                    'place_value' => ['Pet Friendly', 'Suasana Tenang', 'Work From Cafe', 'Bersejarah/Tradisional'],
-                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Tradisional'],
-                    'menu_image_url' => $faker->imageUrl(640, 480),
-                    'menu' => [
-                        ['name' => 'Es Kopi Rumangsa', 'image_url' => $faker->imageUrl(640, 480), 'price' => 22000, 'description' => 'Kopi susu gula aren creamy.'],
-                        ['name' => 'Donat Kampung', 'image_url' => $faker->imageUrl(640, 480), 'price' => 8000, 'description' => 'Donat gula klasik.'],
-                        ['name' => 'Filter Coffee', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Beans lokal pilihan.']
-                    ],
-                    'place_attributes' => [
-                        'facility' => [
-                            ['name' => 'Outdoor Seating', 'description' => 'Teras rumah rindang.'],
-                            ['name' => 'WiFi Gratis', 'description' => 'Sangat kencang.'],
-                            ['name' => 'Colokan Listrik', 'description' => 'Banyak.']
-                        ],
-                        'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Aman di halaman rumah.']
-                        ],
-                        'capacity' => [
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Kursi taman.']
-                        ],
-                        'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Mudah.']
-                        ],
-                        'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Scan QR.']
-                        ],
-                        'service' => [
-                            ['name' => 'Dine In', 'description' => 'Suasana santai.']
-                        ]
-                    ]
-                ]
-            ]);
-
-            // =========================================================================
-            // 7. Le Baker Street 4 (Parisian Bakery)
-            // =========================================================================
-            Place::create([
-                'name' => 'Le Baker Street 4',
-                'description' => 'Sepotong Paris di Pontianak. Bakery shop dengan etalase pastry yang menggoda iman. Croissant dan Danish-nya terkenal autentik.',
-                'longitude' => 109.3200,
-                'latitude' => -0.0300,
-                'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                ],
-                'coin_reward' => 50,
-                'exp_reward' => 60,
-                'min_price' => 25000,
-                'max_price' => 70000,
-                'status' => true,
-                'partnership_status' => true,
-                'additional_info' => [
-                    'place_detail' => [
-                        'short_description' => 'Boutique bakery dengan konsep Eropa klasik.',
-                        'address' => 'Jl. Ujung Pandang 2, Pontianak.',
-                        'opening_hours' => '09:00',
-                        'closing_hours' => '21:00',
-                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62811XXXXXXXX',
-                        'website' => 'https://instagram.com/lebakerstreet4',
-                    ],
-                    'place_value' => ['Estetika/Instagrammable', 'Rasa Autentik', 'Menu Unik/Variasi'],
-                    'food_type' => ['Makanan Kemasan', 'Menu Campuran', 'Minuman dan Tambahan'],
-                    'menu_image_url' => $faker->imageUrl(640, 480),
-                    'menu' => [
-                        ['name' => 'Almond Croissant', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => 'Croissant flaky dengan isian almond.'],
-                        ['name' => 'Cromboloni', 'image_url' => $faker->imageUrl(640, 480), 'price' => 40000, 'description' => 'Pastry viral dengan isian krim.'],
-                        ['name' => 'Hot Cappuccino', 'image_url' => $faker->imageUrl(640, 480), 'price' => 30000, 'description' => 'Teman makan roti.']
-                    ],
-                    'place_attributes' => [
-                        'facility' => [
-                            ['name' => 'Indoor Seating', 'description' => 'Estetik dan dingin.'],
-                            ['name' => 'Toilet Bersih', 'description' => 'Tersedia.']
-                        ],
-                        'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Tersedia di depan ruko.']
-                        ],
-                        'capacity' => [
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Cocok untuk tea time.']
-                        ],
-                        'accessibility' => [
-                            ['name' => 'Pintu Kaca', 'description' => 'Mudah didorong.']
-                        ],
-                        'payment' => [
-                            ['name' => 'Debit Card', 'description' => 'Tersedia.'],
-                            ['name' => 'QRIS', 'description' => 'Tersedia.']
-                        ],
-                        'service' => [
-                            ['name' => 'Take Away', 'description' => 'Kemasan box cantik.']
-                        ]
-                    ]
-                ]
-            ]);
-
-            // =========================================================================
-            // 8. Disela Coffee & Roastery (Hidden Minimalist)
-            // =========================================================================
-            Place::create([
-                'name' => 'Disela Coffee & Roastery',
-                'description' => 'Sesuai namanya, berada "di sela-sela" bangunan lain. Coffee shop minimalis yang fokus pada kualitas beans. Tempatnya mungil tapi sangat nyaman.',
-                'longitude' => 109.3380,
-                'latitude' => -0.0380,
-                'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                ],
-                'coin_reward' => 30,
-                'exp_reward' => 100,
-                'min_price' => 20000,
+                'exp_reward' => 130,
+                'min_price' => 15000,
                 'max_price' => 50000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Coffee shop mungil "di sela" bangunan dengan kopi berkualitas.',
-                        'address' => 'Jl. Dr. Sutomo, Pontianak.',
+                        'short_description' => 'Warung kopi di halaman rumah yang asri dan sejuk.',
+                        'address' => 'Jl. Karangan No.1, Komp. UNTAN, Pontianak.',
                         'opening_hours' => '08:00',
-                        'closing_hours' => '22:00',
+                        'closing_hours' => '24:00',
                         'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62896XXXXXXXX',
-                        'website' => 'https://instagram.com/disela.coffee',
+                        'contact_number' => '08192020121',
+                        'website' => 'https://instagram.com/rumangsa.kopi',
                     ],
-                    'place_value' => ['Bersejarah/Tradisional', 'Pelayanan Ramah', 'Suasana Tenang'],
-                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Tradisional'],
+                    'place_value' => ['Suasana Tenang', 'Work From Cafe', 'Pet Friendly', 'Harga Terjangkau'],
+                    'food_type' => ['Minuman dan Tambahan', 'Makanan Tradisional', 'Menu Campuran', 'Makanan Cepat Saji'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Kopi Susu Disela', 'image_url' => $faker->imageUrl(640, 480), 'price' => 22000, 'description' => 'Creamy dan strong.'],
-                        ['name' => 'Lychee Tea', 'image_url' => $faker->imageUrl(640, 480), 'price' => 18000, 'description' => 'Segar dengan buah leci asli.'],
-                        ['name' => 'Brownies', 'image_url' => $faker->imageUrl(640, 480), 'price' => 15000, 'description' => 'Fudgy brownies.']
+                        ['name' => 'Rumansa', 'image_url' => $faker->imageUrl(640, 480), 'price' => 18000, 'description' => 'Es kopi susu gula aren yang creamy.'],
+                        ['name' => 'Secret Mango', 'image_url' => $faker->imageUrl(640, 480), 'price' => 22000, 'description' => 'Donat gula klasik, teman ngopi terbaik.'],
+                        ['name' => 'Crispy Chicken Mayo', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'V60 dengan beans lokal pilihan.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'AC', 'description' => 'Sejuk.'],
-                            ['name' => 'Toilet Bersih', 'description' => 'Kecil tapi bersih.']
+                            ['name' => 'Outdoor Garden', 'description' => 'Duduk di bawah pohon rindang.'],
+                            ['name' => 'WiFi', 'description' => 'Koneksi stabil.'],
+                            ['name' => 'Stopkontak', 'description' => 'Tersedia di area teras.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Di depan ruko.']
+                            ['name' => 'Parkir Motor', 'description' => 'Luas dan aman di halaman.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil (2-4 orang)', 'description' => 'Space terbatas.']
+                            ['name' => 'Meja Taman', 'description' => 'Meja besi/kayu outdoor.'],
+                            ['name' => 'Teras', 'description' => 'Area semi-indoor.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Mudah.']
+                            ['name' => 'Rata Tanah', 'description' => 'Mudah diakses dari jalan komplek.']
+                        ],
+                        'payment' => [
+                            ['name' => 'QRIS', 'description' => 'Tersedia.'],
+                            ['name' => 'Tunai', 'description' => 'Bisa.']
+                        ],
+                        'service' => [
+                            ['name' => 'Dine In', 'description' => 'Suasana santai.'],
+                            ['name' => 'Take Away', 'description' => 'Bisa.']
+                        ]
+                    ]
+                ]
+            ]);
+
+            // =========================================================================
+            // 7. Le Baker Street (Parisian Bakery)
+            // =========================================================================
+            Place::create([
+                'name' => 'Le Baker Street',
+                'description' => 'Bakery shop yang membawa nuansa Paris ke Pontianak. Dikenal dengan interiornya yang klasik dan elegan, tempat ini menyajikan aneka pastry otentik seperti Croissant dan Danish. Cocok untuk menikmati sarapan cantik atau afternoon tea.',
+                'longitude' => 109.288575,
+                'latitude' => -0.042840,
+                'image_urls' => [
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Lantai 2'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Etalase Roti'],
+                ],
+                'coin_reward' => 50,
+                'exp_reward' => 60,
+                'min_price' => 25000,
+                'max_price' => 80000,
+                'status' => true,
+                'partnership_status' => true,
+                'additional_info' => [
+                    'place_detail' => [
+                        'short_description' => 'Butik bakery estetik dengan sajian pastry ala Prancis.',
+                        'address' => 'Jl. Ujung Pandang 2, Pontianak Kota.',
+                        'opening_hours' => '09:00',
+                        'closing_hours' => '22:00',
+                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                        'contact_number' => null,
+                        'website' => 'https://instagram.com/lebakerstreet',
+                    ],
+                    'place_value' => ['Estetika/Instagrammable', 'Rasa Autentik', 'Menu Unik/Variasi', 'Nongkrong'],
+                    'food_type' => ['Makanan Kemasan', 'Menu Campuran', 'Minuman dan Tambahan', 'Menu Komposit'],
+                    'menu_image_url' => $faker->imageUrl(640, 480),
+                    'menu' => [
+                        ['name' => 'Sunkisspresso', 'image_url' => $faker->imageUrl(640, 480), 'price' => 23000, 'description' => 'Croissant buttery dengan topping almond melimpah.'],
+                        ['name' => 'Mr. Choco Chu', 'image_url' => $faker->imageUrl(640, 480), 'price' => 23000, 'description' => 'Cake keju lembut yang lumer di mulut.'],
+                        ['name' => 'Rongin Strawberry', 'image_url' => $faker->imageUrl(640, 480), 'price' => 15000, 'description' => 'Kopi panas dengan foam tebal.']
+                    ],
+                    'place_attributes' => [
+                        'facility' => [
+                            ['name' => 'Indoor AC', 'description' => 'Dingin dan wangi roti.'],
+                            ['name' => 'Toilet', 'description' => 'Tersedia.']
+                        ],
+                        'parking' => [
+                            ['name' => 'Parkir Mobil', 'description' => 'Tersedia di depan ruko.']
+                        ],
+                        'capacity' => [
+                            ['name' => 'Meja Kecil', 'description' => 'Cocok untuk tea time berdua.'],
+                            ['name' => 'Lantai 2', 'description' => 'Area duduk lebih luas.']
+                        ],
+                        'accessibility' => [
+                            ['name' => 'Pintu Kaca', 'description' => 'Mudah dibuka.']
+                        ],
+                        'payment' => [
+                            ['name' => 'Debit/Credit', 'description' => 'Bisa.'],
+                            ['name' => 'QRIS', 'description' => 'Tersedia.']
+                        ],
+                        'service' => [
+                            ['name' => 'Take Away', 'description' => 'Box kemasan premium.'],
+                            ['name' => 'Dine In', 'description' => 'Piring keramik cantik.']
+                        ]
+                    ]
+                ]
+            ]);
+
+            // =========================================================================
+            // 8. Disela Coffee (Hidden Minimalist)
+            // =========================================================================
+            Place::create([
+                'name' => 'Disela Coffee',
+                'description' => 'Coffee shop mungil yang benar-benar berada "di sela" bangunan, menawarkan ketenangan di tengah keramaian Jalan Dr. Sutomo. Mengusung desain minimalis Jepang yang clean, tempat ini sangat nyaman untuk ngopi sebentar atau bekerja dengan fokus tinggi.',
+                'longitude' => 109.346876,
+                'latitude' => -0.034913,
+                'image_urls' => [
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Meja Bar'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Depan'],
+                ],
+                'coin_reward' => 30,
+                'exp_reward' => 100,
+                'min_price' => 25000,
+                'max_price' => 50000,
+                'status' => true,
+                'partnership_status' => true,
+                'additional_info' => [
+                    'place_detail' => [
+                        'short_description' => 'Coffee shop minimalis yang nyempil namun sangat nyaman.',
+                        'address' => 'Jl. Tanjung Pura Gg. Kelantan No.1-2, Kec. Pontianak Kota',
+                        'opening_hours' => '08:00',
+                        'closing_hours' => '22:30',
+                        'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                        'contact_number' => '081351610601',
+                        'website' => 'https://instagram.com/disela.roastery',
+                    ],
+                    'place_value' => ['Suasana Tenang', 'Work From Cafe', 'Estetika/Instagrammable', 'Pelayanan Ramah'],
+                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Tradisional', 'Makanan Cepat Saji'],
+                    'menu_image_url' => $faker->imageUrl(640, 480),
+                    'menu' => [
+                        ['name' => 'Disela', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Es kopi susu signature yang balance.'],
+                        ['name' => 'Coconela', 'image_url' => $faker->imageUrl(640, 480), 'price' => 24000, 'description' => 'Teh leci segar.'],
+                        ['name' => 'Spring Garden', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Camilan gurih dengan bumbu rujak pedas.']
+                    ],
+                    'place_attributes' => [
+                        'facility' => [
+                            ['name' => 'AC', 'description' => 'Sangat sejuk.'],
+                            ['name' => 'WiFi Kencang', 'description' => 'Cocok untuk kerja.']
+                        ],
+                        'parking' => [
+                            ['name' => 'Parkir Motor', 'description' => 'Tersedia di depan ruko.']
+                        ],
+                        'capacity' => [
+                            ['name' => 'Meja Bar', 'description' => 'Menghadap jendela.'],
+                            ['name' => 'Meja Kecil', 'description' => 'Terbatas.'
+                            ]
+                        ],
+                        'accessibility' => [
+                            ['name' => 'Pintu Geser', 'description' => 'Akses mudah.']
                         ],
                         'payment' => [
                             ['name' => 'QRIS', 'description' => 'Utama.'],
                             ['name' => 'Tunai', 'description' => 'Bisa.']
                         ],
                         'service' => [
-                            ['name' => 'Take Away', 'description' => 'Cup travel friendly.']
+                            ['name' => 'Take Away', 'description' => 'Cup praktis.'],
+                            ['name' => 'Dine In', 'description' => 'Self service.'
+                            ]
                         ]
                     ]
                 ]
@@ -537,13 +542,13 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Bakso Cahaya Abadi',
-                'description' => 'Legenda kuliner Pontianak. Bukan tempat yang instagrammable, tapi rasa bakso sapinya konsisten lezat selama puluhan tahun.',
-                'longitude' => 109.3500,
-                'latitude' => -0.0250,
+                'description' => 'Legenda kuliner Pontianak yang tak lekang oleh waktu. Dikenal dengan tekstur baksonya yang kenyal dan kuah kaldu sapi asli yang gurih. Tanpa dekorasi mewah, tempat ini selalu ramai dikunjungi warga lokal yang mencari rasa bakso autentik.',
+                'longitude' => 109.340494,
+                'latitude' => -0.059785,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Makan'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Dapur'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Parkir'],
                 ],
                 'coin_reward' => 20,
                 'exp_reward' => 40,
@@ -553,41 +558,44 @@ class PlaceSeeder extends Seeder
                 'partnership_status' => false,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Warung bakso legendaris dengan resep turun temurun.',
-                        'address' => 'Jl. Diponegoro No. XX, Pontianak.',
-                        'opening_hours' => '10:00',
-                        'closing_hours' => '21:00',
+                        'short_description' => 'Warung bakso legendaris dengan cita rasa kaldu sapi yang khas.',
+                        'address' => 'Jl. Adi Perdana No.A17, Parit Tokaya, Pontianak Selatan.',
+                        'opening_hours' => '08:00',
+                        'closing_hours' => '23:00',
                         'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62561XXXXX',
-                        'website' => 'https://instagram.com/baksocahaya' ,
+                        'contact_number' => '089676981619',
+                        'website' => 'https://instagram.com/baksocahayaabadi',
                     ],
-                    'place_value' => ['Rasa Autentik', 'Bersejarah/Tradisional', 'Harga Terjangkau'],
-                    'food_type' => ['Sup/Soto', 'Gaya Padang', 'Menu Komposit'],
+                    'place_value' => ['Rasa Autentik', 'Bersejarah/Tradisional', 'Harga Terjangkau', 'Pelayanan Ramah'],
+                    'food_type' => ['Sup/Soto', 'Menu Komposit', 'Gaya Tionghoa', 'Makanan Cepat Saji'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Bakso Sapi Komplit', 'image_url' => $faker->imageUrl(640, 480), 'price' => 30000, 'description' => 'Bakso, tahu, mie kuning, kwetiau.'],
-                        ['name' => 'Es Jeruk Besar', 'image_url' => $faker->imageUrl(640, 480), 'price' => 10000, 'description' => 'Jeruk Pontianak asli.'],
-                        ['name' => 'Kerupuk Ikan', 'image_url' => $faker->imageUrl(640, 480), 'price' => 5000, 'description' => 'Pelengkap makan bakso.']
+                        ['name' => 'Bakso Abadi', 'image_url' => $faker->imageUrl(640, 480), 'price' => 50000, 'description' => 'Bakso, tahu, mie kuning, dan kwetiau.'],
+                        ['name' => 'Bakso Lava', 'image_url' => $faker->imageUrl(640, 480), 'price' => 13000, 'description' => 'Jeruk Pontianak murni segar.'],
+                        ['name' => 'Nasi Goreng Bakso', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Gorengan pelengkap yang wajib dicoba.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Kipas Angin', 'description' => 'Non-AC.'],
+                            ['name' => 'Kipas Angin', 'description' => 'Area makan terbuka.'],
                             ['name' => 'Toilet', 'description' => 'Sederhana.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Di trotoar depan.']
+                            ['name' => 'Parkir Motor', 'description' => 'Di depan ruko.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Sedang (5-8 orang)', 'description' => 'Meja panjang sharing.']
+                            ['name' => 'Meja Panjang', 'description' => 'Konsep sharing table.'],
+                            ['name' => 'Kapasitas Besar', 'description' => 'Bisa menampung banyak orang.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Mudah.']
+                            ['name' => 'Rata Tanah', 'description' => 'Akses langsung dari parkiran.']
                         ],
                         'payment' => [
-                            ['name' => 'Tunai', 'description' => 'Cash only.']
+                            ['name' => 'Tunai', 'description' => 'Metode utama.'],
+                            ['name' => 'QRIS', 'description' => 'Tersedia.']
                         ],
                         'service' => [
-                            ['name' => 'Dine In', 'description' => 'Cepat saji.']
+                            ['name' => 'Cepat Saji', 'description' => 'Pelayanan sangat gesit.'],
+                            ['name' => 'Dine In', 'description' => 'Langsung makan panas-panas.']
                         ]
                     ]
                 ]
@@ -598,59 +606,60 @@ class PlaceSeeder extends Seeder
             // =========================================================================
             Place::create([
                 'name' => 'Popina',
-                'description' => 'Bistro dengan desain interior yang chic dan playful. Menyajikan comfort food, gelato, dan cake. Destinasi "cantik" untuk arisan atau date.',
-                'longitude' => 109.3250,
-                'latitude' => -0.0420,
+                'description' => 'Bistro hits di kawasan Paris 1 dengan interior modern yang playful dan instagrammable. Dimiliki oleh alumni Masterchef, tempat ini menyajikan menu fusion kreatif mulai dari Se\'i Sapi hingga dessert berkualitas. Spot yang sempurna untuk arisan atau makan malam romantis.',
+                'longitude' => 109.359345,
+                'latitude' => -0.060487,
                 'image_urls' => [
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
-                    $faker->imageUrl(640, 480),
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Indoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Area Outdoor'],
+                    ['url' => $faker->imageUrl(640, 480), 'description' => 'Musholla'],
                 ],
                 'coin_reward' => 70,
                 'exp_reward' => 60,
-                'min_price' => 35000,
-                'max_price' => 90000,
+                'min_price' => 25000,
+                'max_price' => 50000,
                 'status' => true,
                 'partnership_status' => true,
                 'additional_info' => [
                     'place_detail' => [
-                        'short_description' => 'Lifestyle bistro dengan gelato dan comfort food.',
-                        'address' => 'Jl. Suprapto, Pontianak.',
-                        'opening_hours' => '10:00',
+                        'short_description' => 'Bistro fusion modern dengan menu kreatif dan gelato.',
+                        'address' => 'Jl. Parit Haji Husein 1 (Paris 1), Gg. Palasari No. 4, Pontianak.',
+                        'opening_hours' => '12:00',
                         'closing_hours' => '22:00',
                         'opening_days' => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                        'contact_number' => '62811XXXXXXXX',
-                        'website' => 'https://instagram.com/popina',
+                        'contact_number' => null,
+                        'website' => 'https://instagram.com/popina.cafe',
                     ],
-                    'place_value' => ['Estetika/Instagrammable', 'Ramah Keluarga', 'Menu Unik/Variasi'],
-                    'food_type' => ['Menu Komposit', 'Minuman dan Tambahan', 'Menu Campuran'],
+                    'place_value' => ['Estetika/Instagrammable', 'Menu Unik/Variasi', 'Ramah Keluarga', 'Pelayanan Ramah'],
+                    'food_type' => ['Menu Komposit', 'Menu Campuran', 'Minuman dan Tambahan', 'Gaya Padang'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
-                        ['name' => 'Gelato Cone', 'image_url' => $faker->imageUrl(640, 480), 'price' => 35000, 'description' => '2 scoops gelato homemade.'],
-                        ['name' => 'Popina Fried Rice', 'image_url' => $faker->imageUrl(640, 480), 'price' => 45000, 'description' => 'Nasi goreng buntut.'],
-                        ['name' => 'Lychee Rose Cake', 'image_url' => $faker->imageUrl(640, 480), 'price' => 40000, 'description' => 'Slice cake wangi bunga mawar.']
+                        ['name' => 'Nasi Ayam Goreng Sambal Bawang', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Daging asap khas Kupang dengan sambal pedas asam.'],
+                        ['name' => 'Nasi Sei Sapi Sambal Luat', 'image_url' => $faker->imageUrl(640, 480), 'price' => 30000, 'description' => 'Ikan cakalang suwir pedas khas Manado.'],
+                        ['name' => 'Nasi Ayam Bakar Bumbu Bali', 'image_url' => $faker->imageUrl(640, 480), 'price' => 36000, 'description' => 'Ayam bakar dengan bumbu khas Bali.']
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Baby Chair', 'description' => 'Tersedia.'],
-                            ['name' => 'Indoor Seating', 'description' => 'Sofa nyaman.'],
-                            ['name' => 'AC', 'description' => 'Dingin.']
+                            ['name' => 'Indoor AC', 'description' => 'Dingin dengan dekorasi cantik.'],
+                            ['name' => 'Musholla', 'description' => 'Bersih.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Luas.']
+                            ['name' => 'Parkir Luas', 'description' => 'Area parkir mobil memadai.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Sedang (5-8 orang)', 'description' => 'Cocok untuk grup.']
+                            ['name' => 'Meja Grup', 'description' => 'Cocok untuk arisan/kumpul keluarga.'],
+                            ['name' => 'Private Room', 'description' => 'Tersedia untuk reservasi.']
                         ],
                         'accessibility' => [
                             ['name' => 'Pintu Kaca', 'description' => 'Akses mudah.']
                         ],
                         'payment' => [
-                            ['name' => 'Credit Card', 'description' => 'Bisa.'],
-                            ['name' => 'Debit Card', 'description' => 'Bisa.']
+                            ['name' => 'Debit/Credit', 'description' => 'Bisa.'],
+                            ['name' => 'QRIS', 'description' => 'Bisa.']
                         ],
                         'service' => [
-                            ['name' => 'Private Event', 'description' => 'Bisa booking area.']
+                            ['name' => 'Table Service', 'description' => 'Pelayanan sangat membantu.'],
+                            ['name' => 'Reservasi', 'description' => 'Disarankan saat akhir pekan.']
                         ]
                     ]
                 ]
