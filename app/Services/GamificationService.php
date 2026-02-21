@@ -11,10 +11,14 @@ use Illuminate\Support\Facades\Log;
 class GamificationService
 {
     protected AchievementChecker $achievementChecker;
+    protected NotificationService $notificationService;
 
-    public function __construct(AchievementChecker $achievementChecker)
-    {
+    public function __construct(
+        AchievementChecker $achievementChecker,
+        NotificationService $notificationService,
+    ) {
         $this->achievementChecker = $achievementChecker;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -323,6 +327,18 @@ class GamificationService
             $gamification = $this->formatGamificationResult($achievementResult, $bonusCoins, $bonusXp);
             if ($gamification !== null) {
                 $result["gamification"] = $gamification;
+
+                // Create notifications for unlocked achievements
+                if (!empty($achievementResult["achievements_unlocked"])) {
+                    try {
+                        $this->notificationService->createAchievementNotifications(
+                            $user,
+                            $achievementResult["achievements_unlocked"]
+                        );
+                    } catch (\Exception $e) {
+                        Log::warning("Failed to create achievement notifications: " . $e->getMessage());
+                    }
+                }
             }
 
             return $result;
@@ -460,6 +476,18 @@ class GamificationService
             $gamification = $this->formatGamificationResult($achievementResult, $bonusCoins, $bonusXp);
             if ($gamification !== null) {
                 $result["gamification"] = $gamification;
+
+                // Create notifications for unlocked achievements
+                if (!empty($achievementResult["achievements_unlocked"])) {
+                    try {
+                        $this->notificationService->createAchievementNotifications(
+                            $user,
+                            $achievementResult["achievements_unlocked"]
+                        );
+                    } catch (\Exception $e) {
+                        Log::warning("Failed to create achievement notifications: " . $e->getMessage());
+                    }
+                }
             }
 
             return $result;
