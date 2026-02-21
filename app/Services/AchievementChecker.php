@@ -360,7 +360,7 @@ class AchievementChecker
      */
     public function getUserAchievementsProgress(User $user): array
     {
-        $achievements = Achievement::active()->ordered()->get();
+        $achievements = Achievement::active()->achievements()->ordered()->get();
         $result = [];
 
         foreach ($achievements as $achievement) {
