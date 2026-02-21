@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V2\GamificationController;
 use App\Http\Controllers\Api\V2\LeaderboardController;
 use App\Http\Controllers\Api\V2\SocialController;
 use App\Http\Controllers\Api\V2\AppUpdaterController;
+use App\Http\Controllers\Api\V2\NotificationController;
 
 Route::middleware("api")
     ->prefix("v2")
@@ -255,6 +256,26 @@ Route::middleware("api")
                     "getLeaderboardById",
                 ]);
                 Route::get("/rank", [LeaderboardController::class, "userRank"]);
+            });
+
+            // Notifications
+            Route::prefix("notifications")->group(function () {
+                Route::get("/", [
+                    NotificationController::class,
+                    "index",
+                ]);
+                Route::get("/unread-count", [
+                    NotificationController::class,
+                    "unreadCount",
+                ]);
+                Route::post("/{notification_id}/read", [
+                    NotificationController::class,
+                    "markAsRead",
+                ]);
+                Route::post("/read-all", [
+                    NotificationController::class,
+                    "markAllAsRead",
+                ]);
             });
         });
     });
