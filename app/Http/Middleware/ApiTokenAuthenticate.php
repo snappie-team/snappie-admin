@@ -85,27 +85,46 @@ class ApiTokenAuthenticate
     }
 
     /**
+     * Resolve the rate limit and decay for the given request path.
+     *
+     * @return array{limit: int, decay: int}
+     */
+    protected function resolveRateLimit(string $path): array
+    {
+        if (str_contains($path, 'auth/register') || str_contains($path, 'auth/login')) {
+            return [
+                'limit' => (int) env('RATE_LIMIT_AUTH', 5),
+                'decay' => (int) env('RATE_LIMIT_AUTH_DECAY', 60),
+            ];
+        }
+
+        if (str_contains($path, 'gamification/checkin') || str_contains($path, 'gamification/review')) {
+            return [
+                'limit' => (int) env('RATE_LIMIT_GAMIFICATION', 10),
+                'decay' => (int) env('RATE_LIMIT_GAMIFICATION_DECAY', 3600),
+            ];
+        }
+
+        if (str_contains($path, 'social/posts') || str_contains($path, 'social/comment') || str_contains($path, 'social/like')) {
+            return [
+                'limit' => (int) env('RATE_LIMIT_SOCIAL', 20),
+                'decay' => (int) env('RATE_LIMIT_SOCIAL_DECAY', 60),
+            ];
+        }
+
+        return [
+            'limit' => (int) env('RATE_LIMIT_PRIVATE_DEFAULT', 60),
+            'decay' => (int) env('RATE_LIMIT_PRIVATE_DEFAULT_DECAY', 60),
+        ];
+    }
+
+    /**
      * Check if request exceeds rate limit based on endpoint.
      */
     protected function checkRateLimit(Request $request, $user): bool
     {
         $key = 'private:rate-limit:' . $user->id;
-        $path = $request->path();
-        
-        // Different limits for different endpoints
-        if (str_contains($path, 'auth/register') || str_contains($path, 'auth/login')) {
-            $limit = 5; // 5 attempts per minute
-            $decay = 60;
-        } elseif (str_contains($path, 'gamification/checkin') || str_contains($path, 'gamification/review')) {
-            $limit = 10; // 10 attempts per hour
-            $decay = 3600;
-        } elseif (str_contains($path, 'social/posts') || str_contains($path, 'social/comment') || str_contains($path, 'social/like')) {
-            $limit = 20; // 20 attempts per minute
-            $decay = 60;
-        } else {
-            $limit = 60; // 60 requests per minute (default)
-            $decay = 60;
-        }
+        ['limit' => $limit, 'decay' => $decay] = $this->resolveRateLimit($request->path());
 
         if ($this->limiter->tooManyAttempts($key, $limit)) {
             return false;
@@ -121,17 +140,7 @@ class ApiTokenAuthenticate
     protected function getRateLimitHeaders(Request $request, $user): array
     {
         $key = 'private:rate-limit:' . $user->id;
-        $path = $request->path();
-
-        if (str_contains($path, 'auth/register') || str_contains($path, 'auth/login')) {
-            $limit = 5;
-        } elseif (str_contains($path, 'gamification/checkin') || str_contains($path, 'gamification/review')) {
-            $limit = 10;
-        } elseif (str_contains($path, 'social/posts') || str_contains($path, 'social/comment') || str_contains($path, 'social/like')) {
-            $limit = 20;
-        } else {
-            $limit = 60;
-        }
+        ['limit' => $limit] = $this->resolveRateLimit($request->path());
 
         return [
             'X-RateLimit-Limit' => $limit,
@@ -146,17 +155,7 @@ class ApiTokenAuthenticate
     protected function rateLimitExceededResponse(Request $request, $user): Response
     {
         $key = 'private:rate-limit:' . $user->id;
-        $path = $request->path();
-
-        if (str_contains($path, 'auth/register') || str_contains($path, 'auth/login')) {
-            $limit = 5;
-        } elseif (str_contains($path, 'gamification/checkin') || str_contains($path, 'gamification/review')) {
-            $limit = 10;
-        } elseif (str_contains($path, 'social/posts') || str_contains($path, 'social/comment') || str_contains($path, 'social/like')) {
-            $limit = 20;
-        } else {
-            $limit = 60;
-        }
+        ['limit' => $limit] = $this->resolveRateLimit($request->path());
 
         $retryAfterInSeconds = $this->limiter->availableIn($key);
 
