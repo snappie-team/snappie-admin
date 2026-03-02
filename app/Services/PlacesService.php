@@ -282,7 +282,13 @@ class PlacesService
         $query = \App\Models\Post::query()
             ->where("place_id", $placeId)
             ->active()
-            ->with(["user:id,name,image_url"]);
+            ->with([
+                "user:id,name,username,image_url",
+                "place:id,name,image_urls",
+                "comments.user:id,name,username,image_url",
+                "likes.user:id,name,username,image_url",
+            ])
+            ->withCount(["likes", "comments"]);
 
         $from = $filters["created_from"] ?? null;
         $to = $filters["created_to"] ?? null;
