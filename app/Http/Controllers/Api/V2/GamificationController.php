@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V2;
 
+use App\Models\User;
 use App\Services\GamificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,12 +13,13 @@ class GamificationController
 
     /**
      * Get all achievements with user progress.
+     * Accepts optional ?user_id= query param to fetch achievements for a specific user.
      */
     public function achievements(Request $request): JsonResponse
     {
         try {
-            $user = $request->user();
-            if (!$user) {
+            $authUser = $request->user();
+            if (!$authUser) {
                 return response()->json(
                     [
                         "success" => false,
@@ -25,6 +27,22 @@ class GamificationController
                     ],
                     401,
                 );
+            }
+
+            $userId = $request->query('user_id');
+            if ($userId) {
+                $user = User::find($userId);
+                if (!$user) {
+                    return response()->json(
+                        [
+                            "success" => false,
+                            "message" => "User not found",
+                        ],
+                        404,
+                    );
+                }
+            } else {
+                $user = $authUser;
             }
 
             $data = $this->service->getAchievements($user);
