@@ -818,4 +818,101 @@ class GamificationController
             );
         }
     }
+
+    /**
+     * Get claimable challenges for authenticated user.
+     */
+    public function claimableChallenges(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Unauthorized",
+                ], 401);
+            }
+
+            $data = $this->service->getClaimableChallenges($user);
+            return response()->json([
+                "success" => true,
+                "message" => "Claimable challenges retrieved",
+                "data" => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "message" => "Failed to retrieve claimable challenges",
+                "error" => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Claim a completed challenge.
+     */
+    public function claimChallenge(Request $request, int $challenge_id): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Unauthorized",
+                ], 401);
+            }
+
+            $result = $this->service->claimChallenge($user, $challenge_id);
+            return response()->json([
+                "success" => true,
+                "message" => "Challenge claimed successfully",
+                "data" => $result,
+            ], 200);
+        } catch (\InvalidArgumentException $e) {
+            $errorMessage = $e->getMessage();
+            $status = str_contains($errorMessage, "not found") ? 404 : 409;
+            return response()->json([
+                "success" => false,
+                "message" => $errorMessage,
+            ], $status);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "message" => "Failed to claim challenge",
+                "error" => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get challenge claim history for authenticated user.
+     */
+    public function challengeClaimHistory(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Unauthorized",
+                ], 401);
+            }
+
+            $limit = (int) $request->query("limit", 20);
+            $page = (int) $request->query("page", 1);
+
+            $data = $this->service->getClaimHistory($user, $limit, $page);
+            return response()->json([
+                "success" => true,
+                "message" => "Challenge claim history retrieved",
+                "data" => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "message" => "Failed to retrieve claim history",
+                "error" => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

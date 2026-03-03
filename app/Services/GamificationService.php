@@ -1075,4 +1075,181 @@ class GamificationService
             ->get()
             ->toArray();
     }
+
+    /**
+     * Get claimable challenges for a user (completed but not yet claimed).
+     * @param User $user
+     * @return array
+     */
+    public function getClaimableChallenges(User $user): array
+    {
+        $challenges = \App\Models\UserAchievement::where("user_id", $user->id)
+            ->whereHas("achievement", function ($query) {
+                $query->where("type", Achievement::TYPE_CHALLENGE)
+                    ->where("status", true);
+            })
+            ->where("status", true) // Completed
+            ->get()
+            ->map(function ($userAchievement) {
+                $achievement = $userAchievement->achievement;
+                $isClaimed = $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+
+                return [
+                    "id" => $achievement->id,
+                    "user_achievement_id" => $userAchievement->id,
+                    "code" => $achievement->code,
+                    "name" => $achievement->name,
+                    "description" => $achievement->description,
+                    "icon_url" => $achievement->image_url,
+                    "type" => $achievement->type,
+                    "reset_schedule" => $achievement->reset_schedule,
+                    "reward_coins" => $achievement->coin_reward,
+                    "reward_xp" => $achievement->reward_xp,
+                    "completed_at" => $userAchievement->completed_at?->toIso8601String(),
+                    "is_claimed" => $isClaimed,
+                ];
+            })
+            ->filter(function ($challenge) {
+                return !$challenge["is_claimed"];
+            })
+            ->values()
+            ->toArray();
+
+        return [
+            "items" => $challenges,
+            "total" => count($challenges),
+        ];
+    }
+
+    /**
+     * Claim rewards from a completed challenge.
+     * @param User $user
+     * @param int $challenge_id
+     * @return array
+     */
+    public function claimChallenge(User $user, int $challenge_id): array
+    {
+        return DB::transaction(function () use ($user, $challenge_id) {
+            $userAchievement = \App\Models\UserAchievement::where("user_id", $user->id)
+                ->where("achievement_id", $challenge_id)
+                ->first();
+
+            if (!$userAchievement) {
+                throw new \InvalidArgumentException("Challenge not found for this user");
+            }
+
+            $challenge = $userAchievement->achievement;
+
+            if (!$challenge) {
+                throw new \InvalidArgumentException("Challenge not found");
+            }
+
+            if ($challenge->type !== Achievement::TYPE_CHALLENGE) {
+                throw new \InvalidArgumentException("This achievement is not a challenge");
+            }
+
+            // Check if challenge is completed
+            if (!$userAchievement->status) {
+                throw new \InvalidArgumentException("Challenge not yet completed");
+            }
+
+            // Check if already claimed
+            $isClaimedBefore = $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+            if ($isClaimedBefore) {
+                throw new \InvalidArgumentException("This challenge has already been claimed");
+            }
+
+            // Merge existing additional_info and add claim_info
+            $existingInfo = $userAchievement->additional_info ?? [];
+            if (!isset($existingInfo["claim_info"])) {
+                $existingInfo["claim_info"] = [];
+            }
+            $existingInfo["claim_info"]["is_claimed"] = true;
+            $existingInfo["claim_info"]["claimed_at"] = now()->toIso8601String();
+            $userAchievement->additional_info = $existingInfo;
+            $userAchievement->save();
+
+            // Add coins and exp
+            $metadata = [
+                "type" => "ChallengeClaim",
+                "id" => $challenge->id,
+                "code" => $challenge->code,
+            ];
+
+            if ($challenge->coin_reward > 0) {
+                $this->addCoins($user, $challenge->coin_reward, $metadata);
+            }
+
+            if ($challenge->reward_xp > 0) {
+                $this->addExp($user, $challenge->reward_xp, $metadata);
+            }
+
+            return [
+                "challenge" => [
+                    "id" => $challenge->id,
+                    "code" => $challenge->code,
+                    "name" => $challenge->name,
+                    "description" => $challenge->description,
+                    "icon_url" => $challenge->image_url,
+                    "reward_coins" => $challenge->coin_reward,
+                    "reward_xp" => $challenge->reward_xp,
+                ],
+                "user_achievement" => $userAchievement->toArray(),
+                "user_stats" => $this->getUserStats($user->fresh()),
+            ];
+        });
+    }
+
+    /**
+     * Get claim history for a user (all claimed challenges).
+     * @param User $user
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function getClaimHistory(User $user, int $limit = 20, int $page = 1): array
+    {
+        $query = \App\Models\UserAchievement::where("user_id", $user->id)
+            ->whereHas("achievement", function ($query) {
+                $query->where("type", Achievement::TYPE_CHALLENGE);
+            })
+            ->where("status", true) // Only completed
+            ->orderBy("updated_at", "desc");
+
+        // Filter by claimed status using get() and collection method for nested JSON
+        $allClaimedChallenges = $query->get()
+            ->filter(function ($userAchievement) {
+                return $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+            });
+
+        $total = $allClaimedChallenges->count();
+        
+        $claimedChallenges = $allClaimedChallenges
+            ->forPage($page, $limit)
+            ->map(function ($userAchievement) {
+                $achievement = $userAchievement->achievement;
+                $claimedAt = $userAchievement->additional_info["claim_info"]["claimed_at"] ?? null;
+
+                return [
+                    "id" => $achievement->id,
+                    "code" => $achievement->code,
+                    "name" => $achievement->name,
+                    "description" => $achievement->description,
+                    "icon_url" => $achievement->image_url,
+                    "reward_coins" => $achievement->coin_reward,
+                    "reward_xp" => $achievement->reward_xp,
+                    "completed_at" => $userAchievement->completed_at?->toIso8601String(),
+                    "claimed_at" => $claimedAt,
+                ];
+            })
+            ->toArray();
+
+        return [
+            "items" => $claimedChallenges,
+            "total" => $total,
+            "limit" => $limit,
+            "current_page" => $page,
+            "last_page" => ceil($total / $limit),
+        ];
+    }
 }

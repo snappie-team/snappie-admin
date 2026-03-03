@@ -420,6 +420,8 @@ class AchievementChecker
                 ->where('period_date', $periodDate)
                 ->first();
 
+            $isClaimed = $progress ? ($progress->additional_info['claim_info']['is_claimed'] ?? false) : false;
+
             $result[] = [
                 'id' => $challenge->id,
                 'code' => $challenge->code,
@@ -437,6 +439,7 @@ class AchievementChecker
                 'target' => $challenge->target,
                 'percentage' => $progress ? $progress->progress_percentage : 0,
                 'is_completed' => $progress ? $progress->isCompleted() : false,
+                'is_claimed' => $isClaimed,
                 'completed_at' => $progress?->completed_at?->toIso8601String(),
                 'expires_at' => $this->getExpirationDate($challenge->reset_schedule),
             ];
