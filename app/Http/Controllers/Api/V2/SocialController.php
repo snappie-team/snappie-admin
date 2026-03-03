@@ -103,6 +103,47 @@ class SocialController
         }
     }
 
+    public function editPost(Request $request, int $post_id): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
+
+            $payload = $request->validate([
+                'content' => 'required|string|max:5000',
+                'image_urls'   => 'nullable|array',
+                'image_urls.*' => 'url',
+                'additional_info' => 'nullable|array|max:5000',
+            ]);
+
+            $post = $this->service->updatePost($user, $post_id, $payload);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Post updated successfully',
+                'data'    => $post,
+            ], 200);
+        } catch (\InvalidArgumentException $e) {
+            $errorMessage = $e->getMessage();
+            $status = str_contains($errorMessage, 'not found') ? 404 : 403;
+            return response()->json([
+                'success' => false,
+                'message' => $errorMessage,
+            ], $status);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update post',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function deletePost(Request $request, int $post_id): JsonResponse
     {
         try {

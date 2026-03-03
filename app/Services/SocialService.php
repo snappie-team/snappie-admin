@@ -300,6 +300,39 @@ class SocialService
     }
 
     /**
+     * Update a post
+     */
+    public function updatePost(User $user, int $postId, array $payload): array
+    {
+        return DB::transaction(function () use ($user, $postId, $payload) {
+            $post = Post::find($postId);
+
+            if (!$post) {
+                throw new \InvalidArgumentException("Post not found");
+            }
+
+            // Check if user is the owner of the post
+            if ($post->user_id !== $user->id) {
+                throw new \InvalidArgumentException("You are not authorized to edit this post");
+            }
+
+            // Update post fields
+            $post->update([
+                "content" => $payload["content"] ?? $post->content,
+                "image_urls" => $payload["image_urls"] ?? $post->image_urls,
+                "additional_info" => $payload["additional_info"] ?? $post->additional_info,
+            ]);
+
+            return $post->load([
+                "user:id,name,username,image_url",
+                "place:id,name,image_urls",
+                "comments.user:id,name,username,image_url",
+                "likes.user:id,name,username,image_url",
+            ])->loadCount(["likes", "comments"])->toArray();
+        });
+    }
+
+    /**
      * Delete a post
      */
     public function deletePost(User $user, int $postId): bool
