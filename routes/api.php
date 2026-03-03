@@ -145,6 +145,18 @@ Route::middleware("api")
                     GamificationController::class,
                     "challenges",
                 ]); // Alias for active challenges
+                Route::get("/challenges/claimable", [
+                    GamificationController::class,
+                    "claimableChallenges",
+                ]);
+                Route::get("/challenges/claim-history", [
+                    GamificationController::class,
+                    "challengeClaimHistory",
+                ]);
+                Route::post("/challenges/claim/{challenge_id}", [
+                    GamificationController::class,
+                    "claimChallenge",
+                ]);
                 Route::get("/rewards", [
                     GamificationController::class,
                     "rewards",
@@ -205,6 +217,10 @@ Route::middleware("api")
                     "postDetail",
                 ]);
                 Route::post("/posts", [SocialController::class, "createPost"]);
+                Route::put("/posts/id/{post_id}", [
+                    SocialController::class,
+                    "editPost",
+                ]);
                 Route::delete("/posts/id/{post_id}", [
                     SocialController::class,
                     "deletePost",
