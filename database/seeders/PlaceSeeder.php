@@ -60,26 +60,25 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi stabil untuk browsing ringan.'],
+                            ['name' => 'Bar Environment', 'description' => 'Suasana slow bar intimate dengan barista expert.'],
                             ['name' => 'Toilet', 'description' => 'Bersih dan terawat.'],
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Tersedia.'],
-                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir terbatas di dalam gang.']
+                            ['name' => 'Parkir Motor', 'description' => 'Tersedia di dalam gang.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil', 'description' => 'Ideal untuk 2-3 orang.'],
-                            ['name' => 'Bar Seat', 'description' => 'Duduk berhadapan langsung dengan barista.']
+                            ['name' => 'Bar Seat', 'description' => 'Interaksi langsung dengan barista - experience utama.'],
+                            ['name' => 'Meja Kecil', 'description' => 'Intimate seating untuk couples.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Tangga', 'description' => 'Akses ke lantai 2 menggunakan tangga.']
+                            ['name' => 'Akses Tersembunyi', 'description' => 'Hidden gem di dalam gang yang tenang.']
                         ],
                         'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Metode pembayaran utama.'],
-                            ['name' => 'Tunai', 'description' => 'Metode pembayaran utama.']
+                            ['name' => 'QRIS', 'description' => 'Metode pembayaran diterima.'],
+                            ['name' => 'Tunai', 'description' => 'Metode pembayaran diterima.']
                         ],
                         'service' => [
-                            ['name' => 'Dine In', 'description' => 'Disarankan untuk pengalaman terbaik.'],
+                            ['name' => 'Dine In', 'description' => 'Pengalaman ngopi yang memorable di bar.'],
                         ]
                     ]
                 ]
@@ -114,7 +113,7 @@ class PlaceSeeder extends Seeder
                         'contact_number' => '082154619606',
                         'website' => 'https://instagram.com/2818.coffeeroasters',
                     ],
-                    'place_value' => ['Work From Cafe', 'Suasana Tenang', 'Jaringan Lancar', 'Rasa Autentik'],
+                    'place_value' => ['Suasana Tenang', 'Minuman dan Tambahan', 'Pelayanan Ramah', 'Work From Cafe'],
                     'food_type' => ['Minuman dan Tambahan', 'Makanan Cepat Saji', 'Menu Campuran', 'Makanan Kemasan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
@@ -181,7 +180,7 @@ class PlaceSeeder extends Seeder
                         'website' => 'https://instagram.com/ningrat.idn',
                     ],
                     'place_value' => ['Ramah Keluarga', 'Suasana Homey', 'Rasa Autentik', 'Pelayanan Ramah'],
-                    'food_type' => ['Menu Komposit', 'Sup/Soto', 'Menu Campuran', 'Makanan Tradisional'],
+                    'food_type' => ['Menu Komposit', 'Menu Campuran', 'Makanan Tradisional', 'Makanan Cepat Saji'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Mie Goreng Jawa Ala Ningrat', 'image_url' => $faker->imageUrl(640, 480), 'price' => 29500, 'description' => 'Nasi goreng signature dengan lauk lengkap.'],
@@ -190,27 +189,27 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'AC', 'description' => 'Area makan dalam ruangan sejuk.'],
+                            ['name' => 'AC Dingin', 'description' => 'Ruangan indoor nyaman untuk makan bersama.'],
                             ['name' => 'Photo Spot', 'description' => 'Dekorasi etnik Jawa yang instagrammable.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir memadai.'],
+                            ['name' => 'Parkir Mobil', 'description' => 'Area parkir memadai untuk rombongan.'],
                             ['name' => 'Parkir Motor', 'description' => 'Tersedia.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Besar', 'description' => 'Cocok untuk rombongan 6-10 orang.'],
-                            ['name' => 'Area Lesehan', 'description' => 'Tersedia opsi duduk lesehan.']
+                            ['name' => 'Meja Besar', 'description' => 'Ideal untuk keluarga/rombongan 6-10 orang.'],
+                            ['name' => 'Area Lesehan', 'description' => 'Opsi karakter tradisional untuk pengalaman homey.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Ramah Anak', 'description' => 'Space luas untuk anak-anak.']
+                            ['name' => 'Ramah Keluarga', 'description' => 'Layout luas dan aman untuk anak-anak.']
                         ],
                         'payment' => [
-                            ['name' => 'Tunai', 'description' => 'Bisa.'],
-                            ['name' => 'Transfer', 'description' => 'Bisa.']
+                            ['name' => 'Tunai', 'description' => 'Diterima.'],
+                            ['name' => 'Transfer', 'description' => 'Diterima.']
                         ],
                         'service' => [
-                            ['name' => 'Reservasi', 'description' => 'Bisa booking meja sebelumnya.'],
-                            ['name' => 'Dine In', 'description' => 'Penyajian makanan cepat.']
+                            ['name' => 'Reservasi', 'description' => 'Disarankan untuk keluarga besar.'],
+                            ['name' => 'Dine In', 'description' => 'Penyajian makanan cepat dan panas.']
                         ]
                     ]
                 ]
@@ -245,8 +244,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => null,
                         'website' => 'https://instagram.com/tokokopi_ods',
                     ],
-                    'place_value' => ['Harga Terjangkau', 'Nongkrong', 'Estetika/Instagrammable', 'Suasana Tenang'],
-                    'food_type' => ['Minuman dan Tambahan', 'Mi Instan', 'Menu Campuran', 'Makanan Cepat Saji'],
+                    'place_value' => ['Harga Terjangkau', 'Minuman dan Tambahan', 'Estetika/Instagrammable', 'Pelayanan Ramah'],
+                    'food_type' => ['Minuman dan Tambahan', 'Makanan Cepat Saji', 'Menu Campuran', 'Makanan Kemasan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Es Kopi Susu Rayu', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Matcha premium yang creamy dan pekat.'],
@@ -255,27 +254,27 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Outdoor Area', 'description' => 'Area duduk santai di teras.'],
-                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi cukup untuk media sosial.'],
-                            ['name' => 'Stopkontak', 'description' => 'Tersedia di beberapa titik.']
+                            ['name' => 'Industrial Raw Design', 'description' => 'Estetika unik untuk nongkrong anak muda.'],
+                            ['name' => 'WiFi Gratis', 'description' => 'Koneksi cukup untuk media sosial dan updates.'],
+                            ['name' => 'Outdoor Area', 'description' => 'Teras santai untuk gathering.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Area parkir di halaman rumah.']
+                            ['name' => 'Parkir Motor', 'description' => 'Aman di halaman rumah.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil', 'description' => 'Cocok untuk 2-4 orang.'],
-                            ['name' => 'Lesehan', 'description' => 'Tersedia area duduk santai.']
+                            ['name' => 'Meja Kecil', 'description' => 'Comfortable untuk 2-4 orang.'],
+                            ['name' => 'Area Lesehan', 'description' => 'Suasana casual santai untuk nongkrong.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Jalan Gang', 'description' => 'Akses masuk hanya muat satu motor.']
+                            ['name' => 'Hidden Spot', 'description' => 'Tersembunyi di gang, akses ramah untuk motor.']
                         ],
                         'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Diutamakan non-tunai.'],
-                            ['name' => 'Tunai', 'description' => 'Bisa.']
+                            ['name' => 'QRIS', 'description' => 'Metode utama untuk digital payment.'],
+                            ['name' => 'Tunai', 'description' => 'Diterima.']
                         ],
                         'service' => [
-                            ['name' => 'Self Service', 'description' => 'Ambil dan bereskan pesanan sendiri.'],
-                            ['name' => 'Take Away', 'description' => 'Cup sealer rapi.']
+                            ['name' => 'Self Service', 'description' => 'Model order dan ambil sendiri.'],
+                            ['name' => 'Take Away', 'description' => 'Cup rapi siap dibawa.']
                         ]
                     ]
                 ]
@@ -371,8 +370,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => '08192020121',
                         'website' => 'https://instagram.com/rumangsa.kopi',
                     ],
-                    'place_value' => ['Suasana Tenang', 'Work From Cafe', 'Pet Friendly', 'Harga Terjangkau'],
-                    'food_type' => ['Minuman dan Tambahan', 'Makanan Tradisional', 'Menu Campuran', 'Makanan Cepat Saji'],
+                    'place_value' => ['Suasana Tenang', 'Minuman dan Tambahan', 'Pelayanan Ramah', 'Work From Cafe'],
+                    'food_type' => ['Minuman dan Tambahan', 'Makanan Cepat Saji', 'Menu Campuran', 'Makanan Kemasan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Rumansa', 'image_url' => $faker->imageUrl(640, 480), 'price' => 18000, 'description' => 'Es kopi susu gula aren yang creamy.'],
@@ -381,27 +380,27 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Outdoor Garden', 'description' => 'Duduk di bawah pohon rindang.'],
-                            ['name' => 'WiFi', 'description' => 'Koneksi stabil.'],
-                            ['name' => 'Stopkontak', 'description' => 'Tersedia di area teras.']
+                            ['name' => 'Outdoor Garden', 'description' => 'Suasana sejuk di bawah pohon rindang - highlight utama.'],
+                            ['name' => 'WiFi Stabil', 'description' => 'Perfect untuk work from cafe dengan koneksi baik.'],
+                            ['name' => 'Stopkontak', 'description' => 'Tersedia di area teras untuk charging.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Luas dan aman di halaman.']
+                            ['name' => 'Parkir Motor', 'description' => 'Luas dan aman di halaman komplek temans.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Taman', 'description' => 'Meja besi/kayu outdoor.'],
-                            ['name' => 'Teras', 'description' => 'Area semi-indoor.']
+                            ['name' => 'Meja Taman', 'description' => 'Meja outdoor di bawah pohon untuk gathering.'],
+                            ['name' => 'Area Teras', 'description' => 'Semi-indoor nyaman untuk diskusi.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Mudah diakses dari jalan komplek.']
+                            ['name' => 'Akses Mudah', 'description' => 'Rata tanah dari jalan komplek UNTAN.']
                         ],
                         'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Tersedia.'],
-                            ['name' => 'Tunai', 'description' => 'Bisa.']
+                            ['name' => 'QRIS', 'description' => 'Digital payment tersedia.'],
+                            ['name' => 'Tunai', 'description' => 'Diterima.']
                         ],
                         'service' => [
-                            ['name' => 'Dine In', 'description' => 'Suasana santai.'],
-                            ['name' => 'Take Away', 'description' => 'Bisa.']
+                            ['name' => 'Dine In', 'description' => 'Santai untuk diskusi dan kerja.'],
+                            ['name' => 'Take Away', 'description' => 'Tersedia untuk mobile.']
                         ]
                     ]
                 ]
@@ -436,8 +435,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => null,
                         'website' => 'https://instagram.com/lebakerstreet',
                     ],
-                    'place_value' => ['Estetika/Instagrammable', 'Rasa Autentik', 'Menu Unik/Variasi', 'Nongkrong'],
-                    'food_type' => ['Makanan Kemasan', 'Menu Campuran', 'Minuman dan Tambahan', 'Menu Komposit'],
+                    'place_value' => ['Estetika/Instagrammable', 'Minuman dan Tambahan', 'Menu Unik/Variasi', 'Harga Terjangkau'],
+                    'food_type' => ['Makanan Kemasan', 'Minuman dan Tambahan', 'Makanan Cepat Saji', 'Menu Campuran'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Sunkisspresso', 'image_url' => $faker->imageUrl(640, 480), 'price' => 23000, 'description' => 'Croissant buttery dengan topping almond melimpah.'],
@@ -446,26 +445,26 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Indoor AC', 'description' => 'Dingin dan wangi roti.'],
-                            ['name' => 'Toilet', 'description' => 'Tersedia.']
+                            ['name' => 'AC Sejuk', 'description' => 'Ruangan dingin dan wangi roti segar.'],
+                            ['name' => 'Display Bakery', 'description' => 'Etalase pastry untuk memilih langsung.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Mobil', 'description' => 'Tersedia di depan ruko.']
+                            ['name' => 'Parkir Depan', 'description' => 'Tersedia di depan ruko strategis.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Kecil', 'description' => 'Cocok untuk tea time berdua.'],
-                            ['name' => 'Lantai 2', 'description' => 'Area duduk lebih luas.']
+                            ['name' => 'Meja Cantik', 'description' => 'Intimate seating untuk afternoon tea.'],
+                            ['name' => 'Lantai 2', 'description' => 'Area luas kedua dengan suasana elegan.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Pintu Kaca', 'description' => 'Mudah dibuka.']
+                            ['name' => 'Akses Mudah', 'description' => 'Pintu kaca lebar untuk masuk/keluar.']
                         ],
                         'payment' => [
-                            ['name' => 'Debit/Credit', 'description' => 'Bisa.'],
-                            ['name' => 'QRIS', 'description' => 'Tersedia.']
+                            ['name' => 'Debit/Credit', 'description' => 'Kartu diterima.'],
+                            ['name' => 'QRIS', 'description' => 'Tersedia untuk digital payment.']
                         ],
                         'service' => [
-                            ['name' => 'Take Away', 'description' => 'Box kemasan premium.'],
-                            ['name' => 'Dine In', 'description' => 'Piring keramik cantik.']
+                            ['name' => 'Take Away', 'description' => 'Box premium untuk bawa pulang.'],
+                            ['name' => 'Dine In', 'description' => 'Sajian dengan piring rapi untuk pengalaman istimewa.']
                         ]
                     ]
                 ]
@@ -500,8 +499,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => '081351610601',
                         'website' => 'https://instagram.com/disela.roastery',
                     ],
-                    'place_value' => ['Suasana Tenang', 'Work From Cafe', 'Estetika/Instagrammable', 'Pelayanan Ramah'],
-                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Tradisional', 'Makanan Cepat Saji'],
+                    'place_value' => ['Suasana Tenang', 'Estetika/Instagrammable', 'Minuman dan Tambahan', 'Work From Cafe'],
+                    'food_type' => ['Minuman dan Tambahan', 'Menu Campuran', 'Makanan Cepat Saji', 'Makanan Kemasan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Disela', 'image_url' => $faker->imageUrl(640, 480), 'price' => 20000, 'description' => 'Es kopi susu signature yang balance.'],
@@ -510,27 +509,28 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'AC', 'description' => 'Sangat sejuk.'],
-                            ['name' => 'WiFi Kencang', 'description' => 'Cocok untuk kerja.']
+                            ['name' => 'AC Minimalis', 'description' => 'Ruangan dingin dan clean dengan design Jepang.'],
+                            ['name' => 'WiFi Kempat', 'description' => 'Koneksi stabil untuk work from cafe fokus.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Tersedia di depan ruko.']
+                            ['name' => 'Parkir Motor', 'description' => 'Tersedia di depan ruko rapi.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Bar', 'description' => 'Menghadap jendela.'],
-                            ['name' => 'Meja Kecil', 'description' => 'Terbatas.'
+                            ['name' => 'Bar Seat Kecil', 'description' => 'Window view untuk fokus kerja.'],
+                            ['name' => 'Meja Intimate', 'description' => 'Terbatas tapi nyaman dan minimalis.'
                             ]
                         ],
                         'accessibility' => [
-                            ['name' => 'Pintu Geser', 'description' => 'Akses mudah.']
+                            ['name' => 'Pintu Geser', 'description' => 'Akses mudah dan desain modern.']
                         ],
                         'payment' => [
-                            ['name' => 'QRIS', 'description' => 'Utama.'],
-                            ['name' => 'Tunai', 'description' => 'Bisa.']
+                            ['name' => 'QRIS', 'description' => 'Metode pembayaran utama digital.'],
+                            ['name' => 'Tunai', 'description' => 'Diterima juga.'
+                            ]
                         ],
                         'service' => [
-                            ['name' => 'Take Away', 'description' => 'Cup praktis.'],
-                            ['name' => 'Dine In', 'description' => 'Self service.'
+                            ['name' => 'Take Away', 'description' => 'Cup rapi siap bawa.'],
+                            ['name' => 'Dine In', 'description' => 'Self service dengan suasana fokus.'
                             ]
                         ]
                     ]
@@ -566,8 +566,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => '089676981619',
                         'website' => 'https://instagram.com/baksocahayaabadi',
                     ],
-                    'place_value' => ['Rasa Autentik', 'Bersejarah/Tradisional', 'Harga Terjangkau', 'Pelayanan Ramah'],
-                    'food_type' => ['Sup/Soto', 'Menu Komposit', 'Gaya Tionghoa', 'Makanan Cepat Saji'],
+                    'place_value' => ['Makanan dan Tambahan', 'Suasana Tenang', 'Menu Unik/Variasi', 'Harga Terjangkau'],
+                    'food_type' => ['Sup/Soto', 'Menu Komposit', 'Menu Campuran', 'Makanan Cepat Saji'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Bakso Abadi', 'image_url' => $faker->imageUrl(640, 480), 'price' => 50000, 'description' => 'Bakso, tahu, mie kuning, dan kwetiau.'],
@@ -576,26 +576,26 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Kipas Angin', 'description' => 'Area makan terbuka.'],
-                            ['name' => 'Toilet', 'description' => 'Sederhana.']
+                            ['name' => 'Kipas Angin', 'description' => 'Area makan terbuka dengan udara segar.'],
+                            ['name' => 'Toilet', 'description' => 'Tersedia untuk kenyamanan tamu.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Motor', 'description' => 'Di depan ruko.']
+                            ['name' => 'Parkir Motor', 'description' => 'Luas di depan ruko untuk ramai.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Panjang', 'description' => 'Konsep sharing table.'],
-                            ['name' => 'Kapasitas Besar', 'description' => 'Bisa menampung banyak orang.']
+                            ['name' => 'Sharing Table', 'description' => 'Meja panjang - konsep legendaris Cahaya Abadi.'],
+                            ['name' => 'Kapasitas Besar', 'description' => 'Mampu menampung rombongan dan keramaian.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Rata Tanah', 'description' => 'Akses langsung dari parkiran.']
+                            ['name' => 'Akses Langsung', 'description' => 'Rata tanah dari parkiran ke area makan.']
                         ],
                         'payment' => [
-                            ['name' => 'Tunai', 'description' => 'Metode utama.'],
-                            ['name' => 'QRIS', 'description' => 'Tersedia.']
+                            ['name' => 'Tunai', 'description' => 'Metode pembayaran utama.'],
+                            ['name' => 'QRIS', 'description' => 'Juga tersedia untuk digital payment.']
                         ],
                         'service' => [
-                            ['name' => 'Cepat Saji', 'description' => 'Pelayanan sangat gesit.'],
-                            ['name' => 'Dine In', 'description' => 'Langsung makan panas-panas.']
+                            ['name' => 'Cepat Saji', 'description' => 'Pelayanan sangat cepat dan tanggap.'],
+                            ['name' => 'Dine In', 'description' => 'Makanan selalu panas - kualitas utama.']
                         ]
                     ]
                 ]
@@ -630,8 +630,8 @@ class PlaceSeeder extends Seeder
                         'contact_number' => null,
                         'website' => 'https://instagram.com/popina.cafe',
                     ],
-                    'place_value' => ['Estetika/Instagrammable', 'Menu Unik/Variasi', 'Ramah Keluarga', 'Pelayanan Ramah'],
-                    'food_type' => ['Menu Komposit', 'Menu Campuran', 'Minuman dan Tambahan', 'Gaya Padang'],
+                    'place_value' => ['Estetika/Instagrammable', 'Makanan dan Tambahan', 'Menu Unik/Variasi', 'Ramah Keluarga'],
+                    'food_type' => ['Menu Komposit', 'Menu Campuran', 'Makanan Cepat Saji', 'Minuman dan Tambahan'],
                     'menu_image_url' => $faker->imageUrl(640, 480),
                     'menu' => [
                         ['name' => 'Nasi Ayam Goreng Sambal Bawang', 'image_url' => $faker->imageUrl(640, 480), 'price' => 25000, 'description' => 'Daging asap khas Kupang dengan sambal pedas asam.'],
@@ -640,26 +640,26 @@ class PlaceSeeder extends Seeder
                     ],
                     'place_attributes' => [
                         'facility' => [
-                            ['name' => 'Indoor AC', 'description' => 'Dingin dengan dekorasi cantik.'],
-                            ['name' => 'Musholla', 'description' => 'Bersih.']
+                            ['name' => 'AC Sejuk', 'description' => 'Interior modern dengan dekorasi playful dan cantik.'],
+                            ['name' => 'Musholla', 'description' => 'Tersedia untuk kenyamanan tamu.']
                         ],
                         'parking' => [
-                            ['name' => 'Parkir Luas', 'description' => 'Area parkir mobil memadai.']
+                            ['name' => 'Parkir Luas', 'description' => 'Area parkir memadai untuk group.']
                         ],
                         'capacity' => [
-                            ['name' => 'Meja Grup', 'description' => 'Cocok untuk arisan/kumpul keluarga.'],
-                            ['name' => 'Private Room', 'description' => 'Tersedia untuk reservasi.']
+                            ['name' => 'Meja Grup', 'description' => 'Perfect untuk arisan dan kumpul keluarga.'],
+                            ['name' => 'Private Room', 'description' => 'Ruang tersedia untuk reservasi spesial.']
                         ],
                         'accessibility' => [
-                            ['name' => 'Pintu Kaca', 'description' => 'Akses mudah.']
+                            ['name' => 'Akses Mudah', 'description' => 'Pintu kaca lebar dan layout nyaman.']
                         ],
                         'payment' => [
-                            ['name' => 'Debit/Credit', 'description' => 'Bisa.'],
-                            ['name' => 'QRIS', 'description' => 'Bisa.']
+                            ['name' => 'Debit/Credit', 'description' => 'Kartu diterima.'],
+                            ['name' => 'QRIS', 'description' => 'Digital payment tersedia.']
                         ],
                         'service' => [
-                            ['name' => 'Table Service', 'description' => 'Pelayanan sangat membantu.'],
-                            ['name' => 'Reservasi', 'description' => 'Disarankan saat akhir pekan.']
+                            ['name' => 'Table Service', 'description' => 'Pelayanan attentive dan membantu.'],
+                            ['name' => 'Reservasi', 'description' => 'Sangat disarankan khususnya weekend.']
                         ]
                     ]
                 ]
