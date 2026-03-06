@@ -168,6 +168,11 @@ class AchievementChecker
             if ($achievement->isOneTime()) {
                 $user->increment('total_achievement');
             }
+            if ($achievement->type === \App\Models\Achievement::TYPE_CHALLENGE) {
+                $user->increment('total_challenge');
+            } else {
+                $user->increment('total_achievement');
+            }
 
             return ['unlocked' => true, 'updated' => false, 'progress' => $progress];
         }
@@ -442,6 +447,7 @@ class AchievementChecker
                 'is_claimed' => $isClaimed,
                 'completed_at' => $progress?->completed_at?->toIso8601String(),
                 'expires_at' => $this->getExpirationDate($challenge->reset_schedule),
+                'additional_info' => $challenge->additional_info,
             ];
         }
 

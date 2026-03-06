@@ -162,14 +162,18 @@ class NotificationService
     public function createAchievementNotification(
         User $user,
         string $achievementName,
-        ?string $description = null,
+        ?string $achievementType = null,
         ?array $metadata = null
     ): Notification {
+        if ($achievementType == 'achievement') {
+            $title = "Kamu mendapat badge \"{$achievementName}\"";
+        } else {
+            $title = "Kamu berhasil menyelesaikan \"{$achievementName}\"";
+        }
         return Notification::create([
             "user_id" => $user->id,
             "type" => Notification::TYPE_ACHIEVEMENT,
-            "title" => "Selamat! Kamu mendapat badge \"{$achievementName}\"",
-            "subtitle" => $description,
+            "title" => $title,
             "metadata" => $metadata,
         ]);
     }
@@ -220,6 +224,7 @@ class NotificationService
                 $achievement["type"] ?? null,
                 [
                     "achievement_id" => $achievement["id"] ?? null,
+                    "achievement_type" => $achievement["type"] ?? null,
                     "level" => $achievement["level"] ?? null,
                     "reward_coins" => $achievement["reward_coins"] ?? 0,
                     "reward_xp" => $achievement["reward_xp"] ?? 0,
