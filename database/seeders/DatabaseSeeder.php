@@ -47,11 +47,9 @@ class DatabaseSeeder extends Seeder
         // Seed gamification achievements data
         $this->call(GamificationSeeder::class);
 
-        // Seed using factories for testing only
-        // User::factory(10)->create();
-        // Reward::factory(5)->create();
+        // Seed articles data
+        $this->call(ArticleSeeder::class);
 
-        // Article::factory(15)->create();
         // Checkin::factory(15)->create();
         // Review::factory(15)->create();
         // Post::factory(15)->create();

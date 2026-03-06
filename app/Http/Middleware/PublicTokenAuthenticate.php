@@ -64,8 +64,8 @@ class PublicTokenAuthenticate
     protected function checkRateLimit(Request $request): bool
     {
         $key = 'public:rate-limit:' . $request->ip();
-        $limit = 60; // 60 requests per minute for public endpoints
-        $decay = 60;
+        $limit = (int) env('RATE_LIMIT_PUBLIC', 60);
+        $decay = (int) env('RATE_LIMIT_PUBLIC_DECAY', 60);
 
         if ($this->limiter->tooManyAttempts($key, $limit)) {
             return false;
@@ -81,7 +81,7 @@ class PublicTokenAuthenticate
     protected function getRateLimitHeaders(Request $request): array
     {
         $key = 'public:rate-limit:' . $request->ip();
-        $limit = 60;
+        $limit = (int) env('RATE_LIMIT_PUBLIC', 60);
 
         return [
             'X-RateLimit-Limit' => $limit,
@@ -96,7 +96,7 @@ class PublicTokenAuthenticate
     protected function rateLimitExceededResponse(Request $request): Response
     {
         $key = 'public:rate-limit:' . $request->ip();
-        $limit = 60;
+        $limit = (int) env('RATE_LIMIT_PUBLIC', 60);
         $retryAfter = now()->addSeconds($this->limiter->availableIn($key));
 
         return response()->json([

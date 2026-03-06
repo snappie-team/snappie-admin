@@ -147,6 +147,12 @@ class UsersService
                     $additionalPayload['user_preferences'],
                 );
             }
+
+            if (isset($additionalPayload['user_feedback']) && is_array($additionalPayload['user_feedback'])) {
+                $existing = $add['user_feedback'] ?? [];
+                $existing[] = $additionalPayload['user_feedback'];
+                $add['user_feedback'] = $existing;
+            }
         }
 
         if (isset($payload['name'])) {

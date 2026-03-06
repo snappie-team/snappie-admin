@@ -97,17 +97,25 @@ class PlacesController
 
     public function posts(int $place_id, Request $request): JsonResponse
     {
-        $filters = [];
-        if ($request->query('created_from')) $filters['created_from'] = (string) $request->query('created_from');
-        if ($request->query('created_to')) $filters['created_to'] = (string) $request->query('created_to');
-        if ($request->query('sort_by')) $filters['sort_by'] = (string) $request->query('sort_by');
-        $perPage = (int) ($request->query('per_page', 10));
-        $page = $request->query('page') ? (int) $request->query('page') : null;
-        $result = $this->service->posts($place_id, $filters, $perPage, $page);
-        return response()->json([
-            'success' => true,
-            'message' => 'Posts retrieved successfully',
-            'data' => $result,
-        ]);
+        try {
+            $filters = [];
+            if ($request->query('created_from')) $filters['created_from'] = (string) $request->query('created_from');
+            if ($request->query('created_to')) $filters['created_to'] = (string) $request->query('created_to');
+            if ($request->query('sort_by')) $filters['sort_by'] = (string) $request->query('sort_by');
+            $perPage = (int) ($request->query('per_page', 10));
+            $page = $request->query('page') ? (int) $request->query('page') : null;
+            $result = $this->service->posts($place_id, $filters, $perPage, $page);
+            return response()->json([
+                'success' => true,
+                'message' => 'Posts retrieved successfully',
+                'data' => $result,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to retrieve posts',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

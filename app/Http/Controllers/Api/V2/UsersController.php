@@ -114,6 +114,8 @@ class UsersController
             'additional_info.user_preferences' => ['sometimes', 'array'],
             'additional_info.user_preferences.food_type' => ['sometimes', 'array'],
             'additional_info.user_preferences.place_value' => ['sometimes', 'array'],
+            'additional_info.user_feedback' => ['sometimes', 'array'],
+            'additional_info.user_feedback.*' => ['sometimes'],
         ]);
         $updated = $this->service->updateProfile($user->id, $payload);
 

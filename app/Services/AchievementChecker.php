@@ -168,6 +168,11 @@ class AchievementChecker
             if ($achievement->isOneTime()) {
                 $user->increment('total_achievement');
             }
+            if ($achievement->type === \App\Models\Achievement::TYPE_CHALLENGE) {
+                $user->increment('total_challenge');
+            } else {
+                $user->increment('total_achievement');
+            }
 
             return ['unlocked' => true, 'updated' => false, 'progress' => $progress];
         }
@@ -360,7 +365,7 @@ class AchievementChecker
      */
     public function getUserAchievementsProgress(User $user): array
     {
-        $achievements = Achievement::active()->ordered()->get();
+        $achievements = Achievement::active()->achievements()->ordered()->get();
         $result = [];
 
         foreach ($achievements as $achievement) {
@@ -420,6 +425,8 @@ class AchievementChecker
                 ->where('period_date', $periodDate)
                 ->first();
 
+            $isClaimed = $progress ? ($progress->additional_info['claim_info']['is_claimed'] ?? false) : false;
+
             $result[] = [
                 'id' => $challenge->id,
                 'code' => $challenge->code,
@@ -437,8 +444,10 @@ class AchievementChecker
                 'target' => $challenge->target,
                 'percentage' => $progress ? $progress->progress_percentage : 0,
                 'is_completed' => $progress ? $progress->isCompleted() : false,
+                'is_claimed' => $isClaimed,
                 'completed_at' => $progress?->completed_at?->toIso8601String(),
                 'expires_at' => $this->getExpirationDate($challenge->reset_schedule),
+                'additional_info' => $challenge->additional_info,
             ];
         }
 

@@ -11,10 +11,14 @@ use Illuminate\Support\Facades\Log;
 class GamificationService
 {
     protected AchievementChecker $achievementChecker;
+    protected NotificationService $notificationService;
 
-    public function __construct(AchievementChecker $achievementChecker)
-    {
+    public function __construct(
+        AchievementChecker $achievementChecker,
+        NotificationService $notificationService,
+    ) {
         $this->achievementChecker = $achievementChecker;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -323,6 +327,18 @@ class GamificationService
             $gamification = $this->formatGamificationResult($achievementResult, $bonusCoins, $bonusXp);
             if ($gamification !== null) {
                 $result["gamification"] = $gamification;
+
+                // Create notifications for unlocked achievements
+                if (!empty($achievementResult["achievements_unlocked"])) {
+                    try {
+                        $this->notificationService->createAchievementNotifications(
+                            $user,
+                            $achievementResult["achievements_unlocked"]
+                        );
+                    } catch (\Exception $e) {
+                        Log::warning("Failed to create achievement notifications: " . $e->getMessage());
+                    }
+                }
             }
 
             return $result;
@@ -460,6 +476,18 @@ class GamificationService
             $gamification = $this->formatGamificationResult($achievementResult, $bonusCoins, $bonusXp);
             if ($gamification !== null) {
                 $result["gamification"] = $gamification;
+
+                // Create notifications for unlocked achievements
+                if (!empty($achievementResult["achievements_unlocked"])) {
+                    try {
+                        $this->notificationService->createAchievementNotifications(
+                            $user,
+                            $achievementResult["achievements_unlocked"]
+                        );
+                    } catch (\Exception $e) {
+                        Log::warning("Failed to create achievement notifications: " . $e->getMessage());
+                    }
+                }
             }
 
             return $result;
@@ -713,6 +741,11 @@ class GamificationService
             if ($achievement->isOneTime()) {
                 $user->increment("total_achievement");
             }
+            if ($achievement->type === \App\Models\Achievement::TYPE_CHALLENGE) {
+                $user->increment('total_challenge');
+            } else {
+                $user->increment('total_achievement');
+            }
 
             $metadata = [
                 "type" => "Achievement",
@@ -903,6 +936,53 @@ class GamificationService
     }
 
     /**
+     * Use a redeemed reward - generates coupon code with 1-day expiry.
+     * @param User $user
+     * @param int $userRewardId
+     * @return array
+     */
+    public function useReward(User $user, int $userRewardId): array
+    {
+        return DB::transaction(function () use ($user, $userRewardId) {
+            $userReward = \App\Models\UserReward::where('id', $userRewardId)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$userReward) {
+                throw new \InvalidArgumentException("Kupon tidak ditemukan.");
+            }
+
+            // Check if already used
+            if (!empty($userReward->additional_info['used_at'])) {
+                throw new \InvalidArgumentException("Kupon sudah dipakai.");
+            }
+
+            // Generate unique redemption code
+            $code = strtoupper(substr(md5(uniqid((string) mt_rand(), true)), 0, 8));
+            $redemptionCode = "SNP-{$code}";
+            $usedAt = now()->toIso8601String();
+            $expiresAt = now()->addDay()->toIso8601String();
+
+            // Update additional_info with usage data
+            $additionalInfo = $userReward->additional_info ?? [];
+            $additionalInfo['redemption_code'] = $redemptionCode;
+            $additionalInfo['used_at'] = $usedAt;
+            $additionalInfo['expires_at'] = $expiresAt;
+
+            $userReward->update([
+                'additional_info' => $additionalInfo,
+            ]);
+
+            return [
+                "user_reward" => $userReward->fresh()->toArray(),
+                "redemption_code" => $redemptionCode,
+                "used_at" => $usedAt,
+                "expires_at" => $expiresAt,
+            ];
+        });
+    }
+
+    /**
      * Get coin transactions for a user.
      * @param User $user
      * @param int $limit
@@ -997,6 +1077,19 @@ class GamificationService
 
         return $rewards
             ->map(function ($reward) use ($user) {
+                // Check if user has redeemed this reward
+                $userReward = \App\Models\UserReward::where('user_id', $user->id)
+                    ->where('reward_id', $reward->id)
+                    ->latest()
+                    ->first();
+
+                $isRedeemed = $userReward !== null;
+                $redemptionCode = $userReward?->additional_info['redemption_code'] ?? null;
+                $usedAt = $userReward?->additional_info['used_at'] ?? null;
+                $expiresAt = $userReward?->additional_info['expires_at'] ?? null;
+                $isUsed = $usedAt !== null;
+                $isExpired = $expiresAt !== null && now()->greaterThan($expiresAt);
+
                 return [
                     "id" => $reward->id,
                     "name" => $reward->name,
@@ -1005,8 +1098,17 @@ class GamificationService
                     "coin_requirement" => $reward->coin_requirement,
                     "stock" => $reward->stock,
                     "can_redeem" =>
+                        !$isRedeemed &&
                         $user->total_coin >= $reward->coin_requirement &&
                         $reward->stock > 0,
+                    "additional_info" => $reward->additional_info,
+                    "user_reward_id" => $userReward?->id,
+                    "is_redeemed" => $isRedeemed,
+                    "is_used" => $isUsed,
+                    "is_expired" => $isExpired,
+                    "redemption_code" => $isUsed ? $redemptionCode : null,
+                    "used_at" => $usedAt,
+                    "expires_at" => $expiresAt,
                 ];
             })
             ->toArray();
@@ -1046,5 +1148,182 @@ class GamificationService
             ->orderBy("coin_requirement", "asc")
             ->get()
             ->toArray();
+    }
+
+    /**
+     * Get claimable challenges for a user (completed but not yet claimed).
+     * @param User $user
+     * @return array
+     */
+    public function getClaimableChallenges(User $user): array
+    {
+        $challenges = \App\Models\UserAchievement::where("user_id", $user->id)
+            ->whereHas("achievement", function ($query) {
+                $query->where("type", Achievement::TYPE_CHALLENGE)
+                    ->where("status", true);
+            })
+            ->where("status", true) // Completed
+            ->get()
+            ->map(function ($userAchievement) {
+                $achievement = $userAchievement->achievement;
+                $isClaimed = $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+
+                return [
+                    "id" => $achievement->id,
+                    "user_achievement_id" => $userAchievement->id,
+                    "code" => $achievement->code,
+                    "name" => $achievement->name,
+                    "description" => $achievement->description,
+                    "icon_url" => $achievement->image_url,
+                    "type" => $achievement->type,
+                    "reset_schedule" => $achievement->reset_schedule,
+                    "reward_coins" => $achievement->coin_reward,
+                    "reward_xp" => $achievement->reward_xp,
+                    "completed_at" => $userAchievement->completed_at?->toIso8601String(),
+                    "is_claimed" => $isClaimed,
+                ];
+            })
+            ->filter(function ($challenge) {
+                return !$challenge["is_claimed"];
+            })
+            ->values()
+            ->toArray();
+
+        return [
+            "items" => $challenges,
+            "total" => count($challenges),
+        ];
+    }
+
+    /**
+     * Claim rewards from a completed challenge.
+     * @param User $user
+     * @param int $challenge_id
+     * @return array
+     */
+    public function claimChallenge(User $user, int $challenge_id): array
+    {
+        return DB::transaction(function () use ($user, $challenge_id) {
+            $userAchievement = \App\Models\UserAchievement::where("user_id", $user->id)
+                ->where("achievement_id", $challenge_id)
+                ->first();
+
+            if (!$userAchievement) {
+                throw new \InvalidArgumentException("Challenge not found for this user");
+            }
+
+            $challenge = $userAchievement->achievement;
+
+            if (!$challenge) {
+                throw new \InvalidArgumentException("Challenge not found");
+            }
+
+            if ($challenge->type !== Achievement::TYPE_CHALLENGE) {
+                throw new \InvalidArgumentException("This achievement is not a challenge");
+            }
+
+            // Check if challenge is completed
+            if (!$userAchievement->status) {
+                throw new \InvalidArgumentException("Challenge not yet completed");
+            }
+
+            // Check if already claimed
+            $isClaimedBefore = $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+            if ($isClaimedBefore) {
+                throw new \InvalidArgumentException("This challenge has already been claimed");
+            }
+
+            // Merge existing additional_info and add claim_info
+            $existingInfo = $userAchievement->additional_info ?? [];
+            if (!isset($existingInfo["claim_info"])) {
+                $existingInfo["claim_info"] = [];
+            }
+            $existingInfo["claim_info"]["is_claimed"] = true;
+            $existingInfo["claim_info"]["claimed_at"] = now()->toIso8601String();
+            $userAchievement->additional_info = $existingInfo;
+            $userAchievement->save();
+
+            // Add coins and exp
+            $metadata = [
+                "type" => "ChallengeClaim",
+                "id" => $challenge->id,
+                "code" => $challenge->code,
+            ];
+
+            if ($challenge->coin_reward > 0) {
+                $this->addCoins($user, $challenge->coin_reward, $metadata);
+            }
+
+            if ($challenge->reward_xp > 0) {
+                $this->addExp($user, $challenge->reward_xp, $metadata);
+            }
+
+            return [
+                "challenge" => [
+                    "id" => $challenge->id,
+                    "code" => $challenge->code,
+                    "name" => $challenge->name,
+                    "description" => $challenge->description,
+                    "icon_url" => $challenge->image_url,
+                    "reward_coins" => $challenge->coin_reward,
+                    "reward_xp" => $challenge->reward_xp,
+                ],
+                "user_achievement" => $userAchievement->toArray(),
+                "user_stats" => $this->getUserStats($user->fresh()),
+            ];
+        });
+    }
+
+    /**
+     * Get claim history for a user (all claimed challenges).
+     * @param User $user
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function getClaimHistory(User $user, int $limit = 20, int $page = 1): array
+    {
+        $query = \App\Models\UserAchievement::where("user_id", $user->id)
+            ->whereHas("achievement", function ($query) {
+                $query->where("type", Achievement::TYPE_CHALLENGE);
+            })
+            ->where("status", true) // Only completed
+            ->orderBy("updated_at", "desc");
+
+        // Filter by claimed status using get() and collection method for nested JSON
+        $allClaimedChallenges = $query->get()
+            ->filter(function ($userAchievement) {
+                return $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
+            });
+
+        $total = $allClaimedChallenges->count();
+        
+        $claimedChallenges = $allClaimedChallenges
+            ->forPage($page, $limit)
+            ->map(function ($userAchievement) {
+                $achievement = $userAchievement->achievement;
+                $claimedAt = $userAchievement->additional_info["claim_info"]["claimed_at"] ?? null;
+
+                return [
+                    "id" => $achievement->id,
+                    "code" => $achievement->code,
+                    "name" => $achievement->name,
+                    "description" => $achievement->description,
+                    "icon_url" => $achievement->image_url,
+                    "reward_coins" => $achievement->coin_reward,
+                    "reward_xp" => $achievement->reward_xp,
+                    "completed_at" => $userAchievement->completed_at?->toIso8601String(),
+                    "claimed_at" => $claimedAt,
+                ];
+            })
+            ->toArray();
+
+        return [
+            "items" => $claimedChallenges,
+            "total" => $total,
+            "limit" => $limit,
+            "current_page" => $page,
+            "last_page" => ceil($total / $limit),
+        ];
     }
 }

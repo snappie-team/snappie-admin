@@ -6,14 +6,19 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\UserActionLog;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SocialService
 {
     protected AchievementChecker $achievementChecker;
+    protected NotificationService $notificationService;
 
-    public function __construct(AchievementChecker $achievementChecker)
-    {
+    public function __construct(
+        AchievementChecker $achievementChecker,
+        NotificationService $notificationService,
+    ) {
         $this->achievementChecker = $achievementChecker;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -295,6 +300,39 @@ class SocialService
     }
 
     /**
+     * Update a post
+     */
+    public function updatePost(User $user, int $postId, array $payload): array
+    {
+        return DB::transaction(function () use ($user, $postId, $payload) {
+            $post = Post::find($postId);
+
+            if (!$post) {
+                throw new \InvalidArgumentException("Post not found");
+            }
+
+            // Check if user is the owner of the post
+            if ($post->user_id !== $user->id) {
+                throw new \InvalidArgumentException("You are not authorized to edit this post");
+            }
+
+            // Update post fields
+            $post->update([
+                "content" => $payload["content"] ?? $post->content,
+                "image_urls" => $payload["image_urls"] ?? $post->image_urls,
+                "additional_info" => $payload["additional_info"] ?? $post->additional_info,
+            ]);
+
+            return $post->load([
+                "user:id,name,username,image_url",
+                "place:id,name,image_urls",
+                "comments.user:id,name,username,image_url",
+                "likes.user:id,name,username,image_url",
+            ])->loadCount(["likes", "comments"])->toArray();
+        });
+    }
+
+    /**
      * Delete a post
      */
     public function deletePost(User $user, int $postId): bool
@@ -363,6 +401,16 @@ class SocialService
             ]);
             $follower->increment("total_following");
             $userToFollow->increment("total_follower");
+
+            // Create follow notification
+            try {
+                $this->notificationService->createFollowNotification(
+                    $follower,
+                    $userToFollow
+                );
+            } catch (\Exception $e) {
+                Log::warning("Failed to create follow notification: " . $e->getMessage());
+            }
 
             // Log follow action for achievement tracking
             $achievementResult = $this->achievementChecker->checkOnAction(
@@ -567,6 +615,22 @@ class SocialService
             // Increment total_like on post
             $post->increment("total_like");
 
+            // Create like notification
+            try {
+                $liker = User::find($userId);
+                $postOwner = User::find($post->user_id);
+                if ($liker && $postOwner) {
+                    $this->notificationService->createLikeNotification(
+                        $liker,
+                        $postOwner,
+                        $postId,
+                        $post->content ?? null
+                    );
+                }
+            } catch (\Exception $e) {
+                Log::warning("Failed to create like notification: " . $e->getMessage());
+            }
+
             // Log like action for achievement tracking
             $user = User::find($userId);
             $achievementResult = $this->achievementChecker->checkOnAction(
@@ -625,6 +689,22 @@ class SocialService
 
             // Increment total_comment on post
             $post->increment("total_comment");
+
+            // Create comment notification
+            try {
+                $commenter = User::find($userId);
+                $postOwner = User::find($post->user_id);
+                if ($commenter && $postOwner) {
+                    $this->notificationService->createCommentNotification(
+                        $commenter,
+                        $postOwner,
+                        $postId,
+                        $comment->comment ?? null
+                    );
+                }
+            } catch (\Exception $e) {
+                Log::warning("Failed to create comment notification: " . $e->getMessage());
+            }
 
             // Log comment action for achievement tracking
             $user = User::find($userId);

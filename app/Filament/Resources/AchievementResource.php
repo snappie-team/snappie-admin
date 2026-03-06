@@ -45,7 +45,7 @@ class AchievementResource extends Resource
                                     ->placeholder('ach_first_checkin')
                                     ->maxLength(50)
                                     ->required()
-                                    ->unique(ignoreRecord: true)
+                                    // ->unique(ignoreRecord: true)
                                     ->helperText('Kode unik untuk achievement')
                                     ->suffixIcon('heroicon-m-hashtag'),
 
@@ -186,7 +186,7 @@ class AchievementResource extends Resource
                         Forms\Components\TextInput::make('image_url')
                             ->label('URL Gambar')
                             ->placeholder('https://example.com/image.png')
-                            ->url()
+                            // ->url()
                             ->maxLength(500)
                             ->helperText('URL gambar (opsional)')
                             ->suffixIcon('heroicon-m-photo'),

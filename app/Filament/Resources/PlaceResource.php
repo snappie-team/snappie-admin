@@ -88,12 +88,26 @@ class PlaceResource extends Resource
                                 Forms\Components\RichEditor::make('description')
                                     ->required()
                                     ->columnSpanFull(),
-                                Forms\Components\FileUpload::make('image_urls')
-                                    ->multiple()
-                                    ->image()
-                                    ->disk('public')
-                                    ->directory('places')
-                                    ->reorderable(),
+                                Forms\Components\Repeater::make('image_urls')
+                                    ->label('Foto Tempat')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('url')
+                                            ->label('Gambar')
+                                            ->image()
+                                            ->disk('public')
+                                            ->directory('places')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('description')
+                                            ->label('Keterangan')
+                                            ->placeholder('Contoh: Area Indoor, Area Parkir, dll')
+                                            ->maxLength(255),
+                                    ])
+                                    ->columns(2)
+                                    ->reorderable()
+                                    ->collapsible()
+                                    ->itemLabel(fn (array $state): ?string => $state['description'] ?? null)
+                                    ->defaultItems(1)
+                                    ->addActionLabel('Tambah Foto'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -115,11 +129,9 @@ class PlaceResource extends Resource
                         Section::make('Harga & Rating')
                             ->schema([
                                 Forms\Components\TextInput::make('min_price')
-                                    ->required()
                                     ->numeric()
                                     ->prefix('IDR'),
                                 Forms\Components\TextInput::make('max_price')
-                                    ->required()
                                     ->numeric()
                                     ->prefix('IDR'),
                             ]),
@@ -353,18 +365,18 @@ class PlaceResource extends Resource
                                     ->label('Deskripsi')
                                     ->html()
                                     ->columnSpanFull(),
-                                ImageEntry::make('image_urls')
-                                ->label('Gambar')
-                                ->disk('public')
-                                ->columnSpanFull()
-                                ->getStateUsing(function ($record) {
-                                    // Pastikan image_urls adalah array dan bukan string
-                                    $imageUrls = is_string($record->image_urls)
-                                    ? json_decode($record->image_urls, true)
-                                    : $record->image_urls;
-                                    
-                                    return $imageUrls;
-                                }),
+                                RepeatableEntry::make('image_urls')
+                                    ->label('Gambar')
+                                    ->schema([
+                                        ImageEntry::make('url')
+                                            ->label('Foto')
+                                            ->disk('public'),
+                                        TextEntry::make('description')
+                                            ->label('Keterangan')
+                                            ->default('-'),
+                                    ])
+                                    ->columns(2)
+                                    ->columnSpanFull(),
                                 InfolistSection::make('Lokasi')
                                     ->schema([
                                         TextEntry::make('latitude')

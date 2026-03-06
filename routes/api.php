@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V2\GamificationController;
 use App\Http\Controllers\Api\V2\LeaderboardController;
 use App\Http\Controllers\Api\V2\SocialController;
 use App\Http\Controllers\Api\V2\AppUpdaterController;
+use App\Http\Controllers\Api\V2\NotificationController;
 
 Route::middleware("api")
     ->prefix("v2")
@@ -144,6 +145,18 @@ Route::middleware("api")
                     GamificationController::class,
                     "challenges",
                 ]); // Alias for active challenges
+                Route::get("/challenges/claimable", [
+                    GamificationController::class,
+                    "claimableChallenges",
+                ]);
+                Route::get("/challenges/claim-history", [
+                    GamificationController::class,
+                    "challengeClaimHistory",
+                ]);
+                Route::post("/challenges/claim/{challenge_id}", [
+                    GamificationController::class,
+                    "claimChallenge",
+                ]);
                 Route::get("/rewards", [
                     GamificationController::class,
                     "rewards",
@@ -194,6 +207,10 @@ Route::middleware("api")
                     GamificationController::class,
                     "redeemReward",
                 ]);
+                Route::post("/rewards/{user_reward_id}/use", [
+                    GamificationController::class,
+                    "useReward",
+                ]);
             });
 
             // Social
@@ -204,6 +221,10 @@ Route::middleware("api")
                     "postDetail",
                 ]);
                 Route::post("/posts", [SocialController::class, "createPost"]);
+                Route::put("/posts/id/{post_id}", [
+                    SocialController::class,
+                    "editPost",
+                ]);
                 Route::delete("/posts/id/{post_id}", [
                     SocialController::class,
                     "deletePost",
@@ -255,6 +276,26 @@ Route::middleware("api")
                     "getLeaderboardById",
                 ]);
                 Route::get("/rank", [LeaderboardController::class, "userRank"]);
+            });
+
+            // Notifications
+            Route::prefix("notifications")->group(function () {
+                Route::get("/", [
+                    NotificationController::class,
+                    "index",
+                ]);
+                Route::get("/unread-count", [
+                    NotificationController::class,
+                    "unreadCount",
+                ]);
+                Route::post("/{notification_id}/read", [
+                    NotificationController::class,
+                    "markAsRead",
+                ]);
+                Route::post("/read-all", [
+                    NotificationController::class,
+                    "markAllAsRead",
+                ]);
             });
         });
     });

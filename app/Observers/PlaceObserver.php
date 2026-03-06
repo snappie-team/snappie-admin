@@ -34,9 +34,10 @@ class PlaceObserver
         // Delete all images from Cloudinary
         if ($place->image_urls && is_array($place->image_urls)) {
             foreach ($place->image_urls as $imageUrl) {
-                if (str_contains($imageUrl, 'cloudinary.com')) {
+                $url = is_array($imageUrl) ? ($imageUrl['url'] ?? null) : $imageUrl;
+                if ($url && str_contains($url, 'cloudinary.com')) {
                     try {
-                        $this->cloudinaryService->deleteByUrl($imageUrl);
+                        $this->cloudinaryService->deleteByUrl($url);
                     } catch (\Exception $e) {
                         Log::warning("Failed to delete Cloudinary image for place {$place->id}: " . $e->getMessage());
                     }
@@ -70,7 +71,14 @@ class PlaceObserver
         $hasLocalFiles = false;
 
         foreach ($imageUrls as $imageUrl) {
-            $cloudinaryUrls[] = $this->uploadIfNeeded($imageUrl, 'places', $hasLocalFiles);
+            if (is_array($imageUrl)) {
+                // New format: {url, description}
+                $uploadedUrl = $this->uploadIfNeeded($imageUrl['url'] ?? null, 'places', $hasLocalFiles);
+                $cloudinaryUrls[] = array_merge($imageUrl, ['url' => $uploadedUrl]);
+            } else {
+                // Legacy format: plain string URL
+                $cloudinaryUrls[] = $this->uploadIfNeeded($imageUrl, 'places', $hasLocalFiles);
+            }
         }
 
         if ($hasLocalFiles) {
