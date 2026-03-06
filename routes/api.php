@@ -207,6 +207,10 @@ Route::middleware("api")
                     GamificationController::class,
                     "redeemReward",
                 ]);
+                Route::post("/rewards/{user_reward_id}/use", [
+                    GamificationController::class,
+                    "useReward",
+                ]);
             });
 
             // Social

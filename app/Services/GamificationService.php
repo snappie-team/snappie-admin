@@ -741,6 +741,11 @@ class GamificationService
             if ($achievement->isOneTime()) {
                 $user->increment("total_achievement");
             }
+            if ($achievement->type === \App\Models\Achievement::TYPE_CHALLENGE) {
+                $user->increment('total_challenge');
+            } else {
+                $user->increment('total_achievement');
+            }
 
             $metadata = [
                 "type" => "Achievement",
@@ -931,6 +936,53 @@ class GamificationService
     }
 
     /**
+     * Use a redeemed reward - generates coupon code with 1-day expiry.
+     * @param User $user
+     * @param int $userRewardId
+     * @return array
+     */
+    public function useReward(User $user, int $userRewardId): array
+    {
+        return DB::transaction(function () use ($user, $userRewardId) {
+            $userReward = \App\Models\UserReward::where('id', $userRewardId)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$userReward) {
+                throw new \InvalidArgumentException("Kupon tidak ditemukan.");
+            }
+
+            // Check if already used
+            if (!empty($userReward->additional_info['used_at'])) {
+                throw new \InvalidArgumentException("Kupon sudah dipakai.");
+            }
+
+            // Generate unique redemption code
+            $code = strtoupper(substr(md5(uniqid((string) mt_rand(), true)), 0, 8));
+            $redemptionCode = "SNP-{$code}";
+            $usedAt = now()->toIso8601String();
+            $expiresAt = now()->addDay()->toIso8601String();
+
+            // Update additional_info with usage data
+            $additionalInfo = $userReward->additional_info ?? [];
+            $additionalInfo['redemption_code'] = $redemptionCode;
+            $additionalInfo['used_at'] = $usedAt;
+            $additionalInfo['expires_at'] = $expiresAt;
+
+            $userReward->update([
+                'additional_info' => $additionalInfo,
+            ]);
+
+            return [
+                "user_reward" => $userReward->fresh()->toArray(),
+                "redemption_code" => $redemptionCode,
+                "used_at" => $usedAt,
+                "expires_at" => $expiresAt,
+            ];
+        });
+    }
+
+    /**
      * Get coin transactions for a user.
      * @param User $user
      * @param int $limit
@@ -1025,6 +1077,19 @@ class GamificationService
 
         return $rewards
             ->map(function ($reward) use ($user) {
+                // Check if user has redeemed this reward
+                $userReward = \App\Models\UserReward::where('user_id', $user->id)
+                    ->where('reward_id', $reward->id)
+                    ->latest()
+                    ->first();
+
+                $isRedeemed = $userReward !== null;
+                $redemptionCode = $userReward?->additional_info['redemption_code'] ?? null;
+                $usedAt = $userReward?->additional_info['used_at'] ?? null;
+                $expiresAt = $userReward?->additional_info['expires_at'] ?? null;
+                $isUsed = $usedAt !== null;
+                $isExpired = $expiresAt !== null && now()->greaterThan($expiresAt);
+
                 return [
                     "id" => $reward->id,
                     "name" => $reward->name,
@@ -1033,8 +1098,17 @@ class GamificationService
                     "coin_requirement" => $reward->coin_requirement,
                     "stock" => $reward->stock,
                     "can_redeem" =>
+                        !$isRedeemed &&
                         $user->total_coin >= $reward->coin_requirement &&
                         $reward->stock > 0,
+                    "additional_info" => $reward->additional_info,
+                    "user_reward_id" => $userReward?->id,
+                    "is_redeemed" => $isRedeemed,
+                    "is_used" => $isUsed,
+                    "is_expired" => $isExpired,
+                    "redemption_code" => $isUsed ? $redemptionCode : null,
+                    "used_at" => $usedAt,
+                    "expires_at" => $expiresAt,
                 ];
             })
             ->toArray();

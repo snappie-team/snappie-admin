@@ -742,6 +742,75 @@ class GamificationController
     }
 
     /**
+     * Use a redeemed reward - generates coupon code.
+     */
+    public function useReward(Request $request, int $user_reward_id): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => "Unauthorized",
+                    ],
+                    401,
+                );
+            }
+
+            $result = $this->service->useReward($user, $user_reward_id);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Kupon berhasil dipakai",
+                    "data" => $result,
+                ],
+                200,
+            );
+        } catch (\InvalidArgumentException $e) {
+            $errorMessage = $e->getMessage();
+
+            if (str_contains($errorMessage, "tidak ditemukan")) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => $errorMessage,
+                    ],
+                    404,
+                );
+            }
+
+            if (str_contains($errorMessage, "sudah dipakai")) {
+                return response()->json(
+                    [
+                        "success" => false,
+                        "message" => $errorMessage,
+                    ],
+                    409,
+                );
+            }
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => $errorMessage,
+                ],
+                400,
+            );
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Internal server error",
+                    "error" => $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+
+    /**
      * Get coin transactions for the authenticated user.
      */
     public function coinTransactions(Request $request): JsonResponse
