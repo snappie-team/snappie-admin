@@ -15,6 +15,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Support\Enums\FontWeight;
+use Filament\Notifications\Notification;
 use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -143,6 +144,28 @@ class UserResource extends Resource
                             ->columns(3),
                     ])->collapsible(),
 
+                // Section 4: Statistik Game
+                Forms\Components\Section::make('🎮 Statistik Game')
+                    ->description('Kelola coin dan EXP pengguna')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('total_coin')
+                                    ->label('Total Coin')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->minValue(0)
+                                    ->suffixIcon('heroicon-m-currency-dollar'),
+
+                                Forms\Components\TextInput::make('total_exp')
+                                    ->label('Total EXP')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->minValue(0)
+                                    ->suffixIcon('heroicon-m-star'),
+                            ]),
+                    ])->collapsible(),
+
                 Forms\Components\Section::make('📁 Daftar Tersimpan')
                     ->description('Kelola daftar tempat, postingan, dan artikel yang disimpan pengguna')
                     ->schema([
@@ -205,6 +228,22 @@ class UserResource extends Resource
                     ->copyable()
                     ->icon('heroicon-m-envelope')
                     ->limit(30),
+
+                Tables\Columns\TextColumn::make('total_coin')
+                    ->label('Coin')
+                    ->numeric()
+                    ->sortable()
+                    ->badge()
+                    ->color('warning')
+                    ->icon('heroicon-m-currency-dollar'),
+
+                Tables\Columns\TextColumn::make('total_exp')
+                    ->label('EXP')
+                    ->numeric()
+                    ->sortable()
+                    ->badge()
+                    ->color('success')
+                    ->icon('heroicon-m-star'),
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('Status')
@@ -289,6 +328,70 @@ class UserResource extends Resource
                     ->requiresConfirmation()
                     ->action(fn(User $record) => $record->update(['status' => false]))
                     ->visible(fn(User $record) => $record->status === true),
+                Tables\Actions\Action::make('adjust_coin')
+                    ->label('Adjust Coin')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->color('warning')
+                    ->form([
+                        Forms\Components\Select::make('operation')
+                            ->label('Operasi')
+                            ->options([
+                                'add' => 'Tambah (+)',
+                                'subtract' => 'Kurangi (-)',
+                                'set' => 'Set Langsung',
+                            ])
+                            ->required(),
+                        Forms\Components\TextInput::make('amount')
+                            ->label('Jumlah')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0),
+                    ])
+                    ->action(function (User $record, array $data): void {
+                        $amount = (int) $data['amount'];
+                        match ($data['operation']) {
+                            'add' => $record->update(['total_coin' => $record->total_coin + $amount]),
+                            'subtract' => $record->update(['total_coin' => max(0, $record->total_coin - $amount)]),
+                            'set' => $record->update(['total_coin' => $amount]),
+                        };
+                        Notification::make()
+                            ->title('Coin berhasil diubah')
+                            ->body("Total coin {$record->name}: {$record->total_coin}")
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('adjust_exp')
+                    ->label('Adjust EXP')
+                    ->icon('heroicon-o-star')
+                    ->color('success')
+                    ->form([
+                        Forms\Components\Select::make('operation')
+                            ->label('Operasi')
+                            ->options([
+                                'add' => 'Tambah (+)',
+                                'subtract' => 'Kurangi (-)',
+                                'set' => 'Set Langsung',
+                            ])
+                            ->required(),
+                        Forms\Components\TextInput::make('amount')
+                            ->label('Jumlah')
+                            ->numeric()
+                            ->required()
+                            ->minValue(0),
+                    ])
+                    ->action(function (User $record, array $data): void {
+                        $amount = (int) $data['amount'];
+                        match ($data['operation']) {
+                            'add' => $record->update(['total_exp' => $record->total_exp + $amount]),
+                            'subtract' => $record->update(['total_exp' => max(0, $record->total_exp - $amount)]),
+                            'set' => $record->update(['total_exp' => $amount]),
+                        };
+                        Notification::make()
+                            ->title('EXP berhasil diubah')
+                            ->body("Total EXP {$record->name}: {$record->total_exp}")
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
