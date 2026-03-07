@@ -29,6 +29,10 @@ Route::middleware("api")
                     AuthenticationController::class,
                     "login",
                 ]);
+                Route::post("/check-username", [
+                    AuthenticationController::class,
+                    "checkUsername",
+                ]);
                 Route::post("/refresh", [
                     AuthenticationController::class,
                     "refreshToken",
