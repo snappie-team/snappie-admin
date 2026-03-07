@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V2;
 
 use App\Http\Requests\Api\V2\LoginRequest;
 use App\Http\Requests\Api\V2\RegisterRequest;
+use App\Models\User;
 use App\Services\AuthenticationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -37,6 +38,22 @@ class AuthenticationController
                 'image_url' => $result['user']->image_url,
             ],
         ], 201);
+    }
+
+    public function checkUsername(Request $request): JsonResponse
+    {
+        $payload = $request->validate([
+            'username' => ['required', 'string', 'max:255'],
+        ]);
+
+        $exists = User::where('username', $payload['username'])->exists();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'available' => !$exists,
+            ],
+        ]);
     }
 
     public function login(Request $request): JsonResponse
