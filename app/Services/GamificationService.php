@@ -1164,6 +1164,12 @@ class GamificationService
             })
             ->where("status", true) // Completed
             ->get()
+            ->filter(function ($userAchievement) {
+                // Only include records matching the current period
+                $achievement = $userAchievement->achievement;
+                $periodDate = $this->achievementChecker->getPeriodDate($achievement->reset_schedule);
+                return $userAchievement->period_date === $periodDate;
+            })
             ->map(function ($userAchievement) {
                 $achievement = $userAchievement->achievement;
                 $isClaimed = $userAchievement->additional_info["claim_info"]["is_claimed"] ?? false;
@@ -1204,22 +1210,22 @@ class GamificationService
     public function claimChallenge(User $user, int $challenge_id): array
     {
         return DB::transaction(function () use ($user, $challenge_id) {
-            $userAchievement = \App\Models\UserAchievement::where("user_id", $user->id)
-                ->where("achievement_id", $challenge_id)
-                ->first();
-
-            if (!$userAchievement) {
-                throw new \InvalidArgumentException("Challenge not found for this user");
-            }
-
-            $challenge = $userAchievement->achievement;
+            $challenge = Achievement::where('type', Achievement::TYPE_CHALLENGE)->find($challenge_id);
 
             if (!$challenge) {
                 throw new \InvalidArgumentException("Challenge not found");
             }
 
-            if ($challenge->type !== Achievement::TYPE_CHALLENGE) {
-                throw new \InvalidArgumentException("This achievement is not a challenge");
+            // Get current period date based on reset schedule
+            $periodDate = $this->achievementChecker->getPeriodDate($challenge->reset_schedule);
+
+            $userAchievement = \App\Models\UserAchievement::where("user_id", $user->id)
+                ->where("achievement_id", $challenge_id)
+                ->where("period_date", $periodDate)
+                ->first();
+
+            if (!$userAchievement) {
+                throw new \InvalidArgumentException("Challenge not found for this user");
             }
 
             // Check if challenge is completed
