@@ -7,89 +7,107 @@ use Illuminate\Database\Seeder;
 
 class ArticleSeeder extends Seeder
 {
+    /**
+     * Changelog v2:
+     *  - Semua artikel diganti dengan artikel aktual dari internet
+     *  - Topik difokuskan ke kuliner Pontianak dan tren kuliner/kopi Indonesia
+     *  - Setiap artikel memiliki link yang berbeda dan relevan dengan isinya
+     *  - Deskripsi diparafrase dari konten asli artikel, bukan disalin
+     *  - Image URL menggunakan Unsplash dengan tema yang sesuai
+     */
     public function run(): void
     {
         $articles = [
+
+            // ── KULINER PONTIANAK (5 artikel) ────────────────────────────────────
+
             [
-                'author' => 'Tim Snappie',
-                'title' => '10 Destinasi Wisata Alam Tersembunyi di Indonesia',
-                'category' => 'Wisata',
-                'description' => 'Indonesia memiliki ribuan destinasi wisata alam yang belum banyak diketahui wisatawan. Dari air terjun tersembunyi di pedalaman Kalimantan hingga pantai-pantai perawan di Maluku, setiap sudut Nusantara menyimpan keindahan yang menunggu untuk dijelajahi. Artikel ini mengulas 10 destinasi wisata alam yang wajib masuk bucket list kamu di tahun ini.',
-                'image_url' => 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Tim Amazing Borneo',
+                'title'       => 'Jelajah Rasa Pontianak 2025: Panduan Wisata Kuliner Tak Terlupakan',
+                'category'    => 'Kuliner Pontianak',
+                'description' => 'Pontianak bukan hanya dikenal dengan Tugu Khatulistiwa, tetapi juga sebagai surga kuliner yang memadukan cita rasa Melayu, Tionghoa, dan Dayak. Di tahun 2025, pesona kuliner kota ini semakin berkembang dengan hadirnya kafe-kafe estetik dan restoran modern yang tetap mempertahankan kelezatan tradisional. Mulai dari Mie Tiaw, Choi Pan, Es Krim Angi, hingga Kopi Pontianak yang legendaris — setiap sudut kota menyimpan pengalaman rasa yang wajib dicoba.',
+                'image_url'   => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800',
+                'link'        => 'https://www.amazingborneo.id/jelajah-rasa-pontianak-2025-panduan-wisata-kuliner-tak-terlupakan/',
             ],
             [
-                'author' => 'Tim Snappie',
-                'title' => 'Tips Fotografi Landscape untuk Pemula',
-                'category' => 'Tips & Trik',
-                'description' => 'Ingin mengabadikan keindahan alam dengan foto yang memukau? Tidak perlu kamera mahal, cukup dengan smartphone dan teknik yang tepat, kamu bisa menghasilkan foto landscape berkualitas. Pelajari komposisi rule of thirds, golden hour, dan teknik framing yang akan membuat foto perjalananmu naik level.',
-                'image_url' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Tim Amazing Borneo',
+                'title'       => 'Kuliner Khas Pontianak yang Wajib Dicoba: Jelajah Rasa Khatulistiwa',
+                'category'    => 'Kuliner Pontianak',
+                'description' => 'Dari Choi Pan yang gurih kenyal, Kwe Cap yang hangat mengenyangkan, Mie Tiaw Sapi dengan wok hei yang kuat, hingga Pengkang — ketan bakar berisi ebi yang aromatik — kuliner Pontianak mencerminkan akulturasi budaya yang kaya. Tak ketinggalan Es Krim Angi berbahan santan kelapa asli dengan topping kacang merah, serta Bubur Pedas yang kaya rempah. Setiap hidangan punya cerita dan keunikan tersendiri yang menjadikan Pontianak destinasi impian para pecinta kuliner.',
+                'image_url'   => 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800',
+                'link'        => 'https://www.amazingborneo.id/jelajah-rasa-khatulistiwa-kuliner-khas-pontianak-yang-wajib-dicoba/',
             ],
             [
-                'author' => 'Rina Kusuma',
-                'title' => 'Kuliner Khas Nusantara yang Wajib Dicoba Saat Traveling',
-                'category' => 'Kuliner',
-                'description' => 'Setiap daerah di Indonesia punya kuliner khas yang sayang untuk dilewatkan. Dari rendang Padang, gudeg Jogja, papeda Maluku, hingga coto Makassar — menjelajahi Indonesia tidak lengkap tanpa mencicipi ragam kulinernya. Simak rekomendasi kuliner khas dari 34 provinsi yang bisa kamu coba saat berkunjung.',
-                'image_url' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Tim Amazing Borneo',
+                'title'       => 'Wisata Kuliner Pontianak: Sensasi Rasa Khatulistiwa yang Tak Terlupakan',
+                'category'    => 'Kuliner Pontianak',
+                'description' => 'Jelajahi pusat kuliner malam di Jalan Gajah Mada yang ramai, atau singgah di Pasar Flamboyan untuk aneka jajanan pasar tradisional. Pontianak menawarkan pengalaman kuliner yang lengkap — dari Mi Tiaw Sapi yang menggoyang lidah, Bingke yang manis dan legit, hingga Kopi O di kopitiam legendaris seperti Warung Kopi Asiang. Budaya ngopi yang kental menjadi bagian tak terpisahkan dari kehidupan sehari-hari warga Kota Khatulistiwa.',
+                'image_url'   => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800',
+                'link'        => 'https://www.amazingborneo.id/wisata-kuliner-pontianak-sensasi-rasa-khatulistiwa-yang-tak-terlupakan/',
             ],
             [
-                'author' => 'Andi Prasetyo',
-                'title' => 'Panduan Mendaki Gunung untuk Pemula',
-                'category' => 'Petualangan',
-                'description' => 'Mendaki gunung menjadi aktivitas yang semakin populer di kalangan anak muda. Namun, persiapan yang matang sangat penting untuk keselamatan dan kenyamanan. Artikel ini membahas persiapan fisik, perlengkapan wajib, etika mendaki, dan rekomendasi gunung ramah pemula di Jawa dan Bali.',
-                'image_url' => 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Tim Amazing Borneo',
+                'title'       => '10 Oleh-Oleh Khas Pontianak yang Wajib Dibawa Pulang',
+                'category'    => 'Kuliner Pontianak',
+                'description' => 'Kunjungan ke Pontianak belum lengkap tanpa membawa pulang oleh-oleh khasnya. Choi Pan yang bisa dibawa beku, Amplang kerupuk ikan tenggiri yang renyah, Kue Bingka dengan berbagai varian rasa, hingga Kopi Liberika khas Kubu Raya dengan aroma floral yang unik. Setiap oleh-oleh bukan sekadar cinderamata, melainkan cerminan kekayaan cita rasa dan tradisi kuliner yang telah diwariskan turun-temurun di Kota Khatulistiwa.',
+                'image_url'   => 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=800',
+                'link'        => 'https://www.amazingborneo.id/10-oleh-oleh-khas-pontianak-yang-wajib-dibawa-pulang/',
             ],
             [
-                'author' => 'Dewi Lestari',
-                'title' => 'Eco-Tourism: Cara Berwisata yang Ramah Lingkungan',
-                'category' => 'Edukasi',
-                'description' => 'Wisata berkelanjutan bukan sekadar tren, tapi kebutuhan. Dengan semakin banyaknya destinasi wisata yang rusak akibat overtourism, penting bagi kita untuk mulai menerapkan prinsip eco-tourism. Mulai dari membawa tumbler sendiri, tidak membuang sampah sembarangan, hingga mendukung komunitas lokal — setiap langkah kecil berdampak besar.',
-                'image_url' => 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Tim Amazing Borneo',
+                'title'       => 'Panduan Wisata Kuliner Pontianak dan Singkawang: Surga Rasa Kalimantan Barat',
+                'category'    => 'Kuliner Pontianak',
+                'description' => 'Kalimantan Barat menyimpan dua surga kuliner sekaligus: Pontianak dengan hidangan peranakan Tionghoa dan kuliner Melayu yang autentik, serta Singkawang dengan Bakmi Kepiting dan Bubur Paddas khas Melayu yang penuh rempah. Panduan ini mengulas tempat-tempat terbaik untuk mencicipi choi pan yang lembut, bubur pedas yang menggugah selera, kopi legendaris, hingga hidangan laut segar — lengkap dengan tips menavigasi kedua kota untuk pengalaman kuliner yang maksimal.',
+                'image_url'   => 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800',
+                'link'        => 'https://www.amazingborneo.id/paket-tour-kuliner-pontianak-singkawang-jelajahi-surga-rasa-kalimantan-barat/',
+            ],
+
+            // ── TREN KULINER INDONESIA (3 artikel) ───────────────────────────────
+
+            [
+                'author'      => 'Redaksi Media Indonesia',
+                'title'       => 'Tren Kuliner Viral 2025 Dorong Pertumbuhan UMKM dan Industri Makanan Minuman',
+                'category'    => 'Tren Kuliner',
+                'description' => 'Industri makanan dan minuman Indonesia tumbuh 6,49 persen hingga kuartal ketiga 2025, melampaui target tahun sebelumnya. Tren ini didorong oleh perubahan perilaku konsumsi Generasi Z yang menyukai menu unik, sederhana, dan fotogenik — mulai dari camilan keju inovatif, dessert bertekstur lumer, donat topping variatif, hingga minuman fusion berbasis matcha dan kopi creamy. Media sosial seperti TikTok dan Instagram menjadi katalisator utama yang membuat UMKM kuliner tumbuh pesat dan berkontribusi sekitar 61,9 persen terhadap PDB nasional.',
+                'image_url'   => 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800',
+                'link'        => 'https://mediaindonesia.com/kuliner/849225/tren-kuliner-viral-2025-dorong-pertumbuhan-umkm-dan-industri-makanan-minuman',
             ],
             [
-                'author' => 'Tim Snappie',
-                'title' => 'Spot Instagramable di Bandung yang Belum Mainstream',
-                'category' => 'Wisata',
-                'description' => 'Bandung selalu punya tempat baru yang menarik untuk dikunjungi. Selain destinasi populer seperti Kawah Putih dan Tangkuban Perahu, ada banyak spot tersembunyi yang cocok untuk hunting foto. Dari kafe estetik di Dago hingga taman-taman tersembunyi di Lembang, temukan spot favoritmu berikutnya di sini.',
-                'image_url' => 'https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Redaksi Jawa Pos',
+                'title'       => 'Ramai Diburu: 8 Makanan dan Minuman Viral di TikTok Sepanjang 2025',
+                'category'    => 'Tren Kuliner',
+                'description' => 'TikTok kembali menjadi etalase utama tren kuliner Indonesia sepanjang 2025. Dari Cimol Bojot jajanan aci kenyal asal Bandung, Dimsum Mentai dengan saus creamy yang gurih pedas, hingga Es Teler Teko yang viral karena penyajiannya dalam teko besar — semua ramai diburu warganet. Candied Salmon dengan tampilan mengilap seperti permen juga mencuri perhatian, membuktikan bahwa kekuatan visual dan kreativitas penyajian menjadi faktor penentu viralitas kuliner di era digital.',
+                'image_url'   => 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800',
+                'link'        => 'https://www.jawapos.com/kuliner/017014685/ramai-diburu-8-makanan-dan-minuman-viral-di-tiktok-2025',
             ],
             [
-                'author' => 'Budi Santoso',
-                'title' => 'Mengenal Budaya Lokal Lewat Wisata Desa',
-                'category' => 'Budaya',
-                'description' => 'Wisata desa menawarkan pengalaman autentik yang tidak bisa kamu dapatkan di hotel berbintang. Tinggal bersama warga lokal, belajar membatik, menanam padi, atau membuat kerajinan tangan — semua itu adalah cara terbaik untuk memahami kekayaan budaya Indonesia. Berikut 5 desa wisata terbaik yang bisa kamu kunjungi.',
-                'image_url' => 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Redaksi Kompas.id',
+                'title'       => 'Mengintip Tren dan Tantangan Bisnis Kopi 2025',
+                'category'    => 'Tren Kuliner',
+                'description' => 'Pasar kopi Indonesia diperkirakan tumbuh 11 persen per tahun hingga 2030, didorong oleh generasi muda yang menjadikan kedai kopi sebagai ruang kerja, tempat bersosialisasi, dan simbol gaya hidup. Tren kopi spesialti terus menguat karena konsumen semakin peduli terhadap kualitas biji, teknik penyeduhan, dan keberlanjutan produksi. Survei menunjukkan bahwa 40 persen konsumen memilih stop kontak sebagai fasilitas paling penting di kedai kopi, diikuti Wi-Fi dan AC — cerminan bahwa kedai kopi kini bukan sekadar tempat minum, melainkan kantor kedua.',
+                'image_url'   => 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800',
+                'link'        => 'https://www.kompas.id/artikel/mengintip-tren-dan-tantangan-bisnis-kopi-2025',
+            ],
+
+            // ── KOPI & CAFE (2 artikel) ───────────────────────────────────────────
+
+            [
+                'author'      => 'Redaksi Haroem Media',
+                'title'       => 'Specialty Coffee: Tren Bisnis Coffee Shop 2025 yang Menjanjikan',
+                'category'    => 'Kopi & Cafe',
+                'description' => 'Kopi spesialti — kopi berkualitas tinggi yang memenuhi standar penilaian Specialty Coffee Association dengan skor minimal 80 dari 100 — diprediksi semakin mendominasi industri coffee shop di 2025. Konsumen kini tidak hanya mencari rasa, tetapi juga ingin mengetahui asal biji kopi, metode pengolahan, dan cerita di balik setiap cangkir. Coffee shop yang mampu menawarkan pengalaman premium dan edukasi kepada pelanggan berpotensi menjadi pembeda di tengah persaingan industri kopi yang semakin ketat.',
+                'image_url'   => 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800',
+                'link'        => 'https://haroem.com/food/maulida/specialty-coffee-tren-bisnis-coffee-shop-2025-yang-menjanjikan/',
             ],
             [
-                'author' => 'Sari Wulandari',
-                'title' => 'Traveling Hemat: Jelajah Indonesia dengan Budget Minim',
-                'category' => 'Tips & Trik',
-                'description' => 'Siapa bilang traveling harus mahal? Dengan perencanaan yang tepat, kamu bisa menjelajah Indonesia dengan budget minim tanpa mengorbankan pengalaman. Dari tips mencari tiket promo, memilih penginapan murah berkualitas, hingga memanfaatkan transportasi lokal — semua trik hemat ada di sini.',
-                'image_url' => 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
+                'author'      => 'Redaksi Jaya Agung Mesin',
+                'title'       => '5 Tren Kopi Kekinian 2025 yang Bikin Nagih dan Wajib Dicoba',
+                'category'    => 'Kopi & Cafe',
+                'description' => 'Cold brew dengan rasa yang lebih halus dan rendah asam diprediksi tumbuh menjadi pasar senilai $1,69 miliar di 2025. Selain itu, kopi floral dengan sentuhan aroma bunga, kopi fungsional dengan tambahan adaptogen atau kolagen, hingga tren kustomisasi yang memungkinkan konsumen memilih setiap detail minuman semakin digemari. Kelima tren ini tidak hanya mengubah cara menikmati kopi, tetapi juga membuka peluang besar bagi pelaku usaha untuk berinovasi dan menciptakan menu yang relevan dengan selera Gen Z.',
+                'image_url'   => 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=800',
+                'link'        => 'https://jayaagungmesin.com/kopi-kekinian/',
             ],
-            [
-                'author' => 'Tim Snappie',
-                'title' => 'Snorkeling dan Diving: Surga Bawah Laut Indonesia',
-                'category' => 'Petualangan',
-                'description' => 'Indonesia adalah rumah bagi Segitiga Terumbu Karang, pusat keanekaragaman hayati laut dunia. Raja Ampat, Bunaken, Komodo, dan Wakatobi hanyalah sebagian kecil dari surga bawah laut yang bisa kamu jelajahi. Artikel ini membahas spot diving terbaik, persiapan, dan sertifikasi yang kamu butuhkan.',
-                'image_url' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
-            ],
-            [
-                'author' => 'Hana Putri',
-                'title' => 'Staycation vs Traveling: Mana yang Lebih Cocok Untukmu?',
-                'category' => 'Lifestyle',
-                'description' => 'Tidak selalu harus pergi jauh untuk refreshing. Staycation di hotel atau resort terdekat bisa jadi alternatif liburan yang tidak kalah menyenangkan. Tapi kapan sebaiknya staycation dan kapan harus traveling? Simak perbandingan lengkapnya termasuk estimasi budget dan rekomendasi destinasi untuk keduanya.',
-                'image_url' => 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800',
-                'link' => 'https://jogja.disway.id/gaya-hidup/read/697842/tempat-makan-ini-masuk-daftar-destinasi-kuliner-unggulan-di-pontianak-simak-ulasan-lengkapnya-berikut-ini',
-            ],
+
         ];
 
         foreach ($articles as $article) {
