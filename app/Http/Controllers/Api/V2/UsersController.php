@@ -236,7 +236,7 @@ class UsersController
 
     public function posts(Request $request, int $user_id): JsonResponse
     {
-        $perPage = (int) $request->query('per_page', 10);
+        $perPage = (int) $request->query('per_page', 25);
         $page = $request->query('page') ? (int) $request->query('page') : null;
 
         $result = $this->service->getPosts($user_id, $perPage, $page);

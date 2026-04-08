@@ -12,7 +12,7 @@ class SocialController
     public function posts(Request $request): JsonResponse
     {
         try {
-            $perPage = (int) ($request->query('per_page', 10));
+            $perPage = (int) ($request->query('per_page', 25));
             $page = (int) $request->query('page', 1);
             if (!is_null($request->query('trending'))) {
                 $data = $this->service->getTrendingPosts($perPage, $page);

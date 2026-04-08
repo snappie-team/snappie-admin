@@ -74,7 +74,7 @@ class SocialService
     }
 
     public function getPosts(
-        int $perPage = 10,
+        int $perPage = 25,
         ?int $page = null,
         array $filters = [],
     ): array {
@@ -128,7 +128,7 @@ class SocialService
 
     public function getFollowingPosts(
         int $userId,
-        int $perPage = 10,
+        int $perPage = 25,
         ?int $page = null,
     ): array {
         $ids = \App\Models\UserFollow::where("follower_id", $userId)
@@ -156,7 +156,8 @@ class SocialService
                 "comments.user:id,name,username,image_url",
                 "likes.user:id,name,username,image_url",
             ])
-            ->withCount(["likes", "comments"]);
+            ->withCount(["likes", "comments"])
+            ->orderBy("created_at", "desc");
 
         $posts = $page
             ? $query->paginate($perPage, ["*"], "page", (int) $page)
@@ -171,7 +172,7 @@ class SocialService
     }
 
     public function getTrendingPosts(
-        int $perPage = 10,
+        int $perPage = 25,
         ?int $page = null,
     ): array {
         $start = now()->startOfWeek();
