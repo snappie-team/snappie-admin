@@ -26,3 +26,7 @@ Thumbs.db
 yarn-error.log
 public/index.php
 tests
+
+# AI Agents Tooling
+/.opencode
+/graphify-out
