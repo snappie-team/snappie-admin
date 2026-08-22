@@ -26,3 +26,8 @@ Thumbs.db
 yarn-error.log
 public/index.php
 tests
+
+/.agents
+/.codex
+/.opencode
+/graphify-out
