@@ -24,8 +24,11 @@ Homestead.yaml
 npm-debug.log
 Thumbs.db
 yarn-error.log
-public/index.php
-tests
+
+/public/css/filament
+/public/js/filament
+# /public/index.php
+/tests
 
 # AI Agents Tooling
 /.agents
