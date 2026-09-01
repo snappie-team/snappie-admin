@@ -28,5 +28,7 @@ public/index.php
 tests
 
 # AI Agents Tooling
+/.agents
+/.codex
 /.opencode
 /graphify-out

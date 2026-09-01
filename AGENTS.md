@@ -1,59 +1,34 @@
-# AGENTS.md — Snappie Admin Panel
+# Repository Guidelines
 
-## Project Overview
-Laravel 12 + Filament 3 admin panel for a gamified location-based check-in platform. PHP 8.2+, MySQL 8.0+.
+## Project Structure & Module Organization
 
-## Key Commands
+This is a Laravel 12 / Filament 3.3 admin panel. Backend application code is under `app/`: HTTP code lives in `app/Http`, models in `app/Models`, reusable workflows in `app/Services`, and Filament resources/widgets in `app/Filament`. Migrations, factories, and seeders are in `database/`. Routes are in `routes/api.php` and `routes/web.php`. Frontend entry points and Tailwind styles are in `resources/js` and `resources/css`; Vite output is generated in `public/build`. API documentation is in `docs/openapi.yaml`. Tests belong in `tests/Feature` or `tests/Unit`.
 
-| Task | Command |
-|------|---------|
-| Install deps (backend + frontend) | `composer install && npm install` |
-| Run everything (server + queue + Vite) | `composer dev` |
-| Run tests (Pest) | `composer test` or `php artisan test` |
-| Run single test file | `php artisan test --filter=UsersServiceTest` |
-| Lint (Pint) | `./vendor/bin/pint` |
-| Build assets | `npm run build` |
-| Clear & cache config | `php artisan config:clear && php artisan config:cache` |
-| Migrate + seed | `php artisan migrate --seed` |
-| Storage link | `php artisan storage:link` |
+## Build, Test, and Development Commands
 
-## Architecture
+- `composer install` and `npm install` install PHP and frontend dependencies.
+- `php artisan migrate --seed` applies the schema and loads development data; configure `.env` first.
+- `composer dev` runs the Laravel server on port 8001, queue listener, and Vite together.
+- `php artisan serve` starts only the Laravel application; use `npm run dev` for live frontend assets.
+- `npm run build` creates production assets in `public/build`.
+- `composer test` (or `php artisan test`) runs the Pest/PHPUnit suite.
+- `vendor/bin/pint` formats PHP according to Laravel Pint.
 
-- **Admin UI**: Filament 3 resources/widgets at `app/Filament/`
-- **Domain**: Eloquent models at `app/Models/`
-- **Services**: Business logic at `app/Services/` (tested in `tests/Unit/Services/`)
-- **Observers**: Model observers at `app/Observers/`
-- **Routing**: Filament panel at `/`, console commands in `app/Console/`
+## Coding Style & Naming Conventions
 
-## Testing
+Follow PSR-12 and existing Laravel conventions: four-space indentation, one class per file, StudlyCase classes, camelCase methods/variables, and snake_case database fields. Name migrations with Laravel timestamps and factories with the related model plus `Factory` (for example, `PlaceFactory`). Keep domain logic in services/models rather than duplicating it in pages or controllers. Run Pint on changed PHP files before committing; use the existing Vite/Tailwind configuration for frontend imports.
 
-- Framework: Pest (extends `Tests\TestCase`)
-- Unit tests: `tests/Unit/Services/` — service layer only
-- Feature tests: `tests/Feature/` (currently empty)
-- Run with `php artisan test` — uses Pest config in `tests/Pest.php`
+## Testing Guidelines
 
-## Conventions
+Use Pest 3 with PHPUnit 11. Put request and integration coverage in `tests/Feature`, isolated behavior in `tests/Unit`, and name files after the subject (for example, `PlacesServiceTest.php`). Add regression tests for bug fixes and run `composer test` locally. No coverage minimum is configured.
 
-- **PSR-12** via Laravel Pint (no config file, uses defaults)
-- **Filament resources** follow standard structure: `Resource.php`, `Pages/`, `RelationManagers/`
-- **Services** contain business logic; controllers thin
-- **Observers** handle model events (e.g., `PostObserver`, `ReviewObserver`)
-- **Migrations** in `database/migrations/`, factories in `database/factories/`
+## Commit & Pull Request Guidelines
 
-## Environment
+Recent history uses short Conventional Commit-style subjects such as `feat: ...` and `refactor(seeder): ...`; use an imperative, concise subject and a scope when useful. Pull requests should explain the behavior change, link the relevant issue or task, call out migrations/configuration changes, and include screenshots for Filament/UI changes. Mention tests/build commands run and any required `.env` or deployment steps.
 
-- Copy `.env.example` → `.env` before first run
-- Required: `DB_CONNECTION=mysql`, `CLOUDINARY_*` for media
-- Dev: `php artisan serve` (port 8000), `npm run dev` (Vite)
-- Queue: `php artisan queue:listen --tries=1` (required for async jobs)
+## Security & Configuration Tips
 
-## Gotchas
-
-- `public/build` and `vendor` are gitignored — run `npm run build` / `composer install` after clone
-- `composer dev` runs server, queue, and Vite concurrently via `concurrently`
-- Filament upgrade runs on `composer install` via `post-autoload-dump` script
-- No Pint config file — uses Laravel defaults
-- Tests are gitignored (see `.gitignore:28`) — ensure they run in CI
+Never commit `.env`, credentials, API keys, or production exports. Start from `.env.example`, keep `APP_DEBUG=false` outside local development, and treat Cloudinary, database, admin, and queue settings as environment-specific secrets. Review migrations and seeders carefully before running them against shared databases.
 
 ## graphify
 
